@@ -1,0 +1,102 @@
+[
+    {
+        "uuid": "822bcab2-40a2-324e-c137-e09195ad7692",
+        "displayName": "Heavy Armor",
+        "description": "Absorbs 66% of total damage taken. Breaks after it has absorbed 50 damage.",
+        "descriptions": [
+            "Absorbs 66% of total damage taken. Breaks after it has absorbed 50 damage."
+        ],
+        "details": [
+            {
+                "name": "DAMAGE REDUCTION",
+                "value": "Partial"
+            },
+            {
+                "name": "DAMAGE ABSORBED",
+                "value": "66%"
+            }
+        ],
+        "displayIcon": "https://media.valorant-api.com/gear/822bcab2-40a2-324e-c137-e09195ad7692/displayicon.png",
+        "assetPath": "ShooterGame/Content/Gear/HeavyArmor_PrimaryAsset",
+        "shopData": {
+            "cost": 1000,
+            "category": "Armor",
+            "shopOrderPriority": 0,
+            "categoryText": "Shields",
+            "gridPosition": null,
+            "canBeTrashed": false,
+            "image": null,
+            "newImage": "https://media.valorant-api.com/gear/822bcab2-40a2-324e-c137-e09195ad7692/shop/newimage.png",
+            "newImage2": null,
+            "assetPath": "ShooterGame/Content/Gear/HeavyArmorPurchasable"
+        }
+    },
+    {
+        "uuid": "4dec83d5-4902-9ab3-bed6-a7a390761157",
+        "displayName": "Light Armor",
+        "description": "Absorbs 66% of total damage taken. Breaks after it has absorbed 25 damage.",
+        "descriptions": [
+            "Absorbs 66% of total damage taken. Breaks after it has absorbed 25 damage."
+        ],
+        "details": [
+            {
+                "name": "DAMAGE REDUCTION",
+                "value": "Partial"
+            },
+            {
+                "name": "DAMAGE ABSORBED",
+                "value": "66%"
+            }
+        ],
+        "displayIcon": "https://media.valorant-api.com/gear/4dec83d5-4902-9ab3-bed6-a7a390761157/displayicon.png",
+        "assetPath": "ShooterGame/Content/Gear/LightArmor_PrimaryAsset",
+        "shopData": {
+            "cost": 400,
+            "category": "Armor",
+            "shopOrderPriority": 0,
+            "categoryText": "Shields",
+            "gridPosition": null,
+            "canBeTrashed": false,
+            "image": null,
+            "newImage": "https://media.valorant-api.com/gear/4dec83d5-4902-9ab3-bed6-a7a390761157/shop/newimage.png",
+            "newImage2": null,
+            "assetPath": "ShooterGame/Content/Gear/LightArmorPurchasable"
+        }
+    },
+    {
+        "uuid": "b1b9086d-41bd-a516-5d29-e3b34a6f1644",
+        "displayName": "Regen Shield",
+        "description": "Absorbs 100% of total damage taken. Regenerates after it has absorbed damage. Has a total regeneration pool of 50.",
+        "descriptions": [
+            "Absorbs 100% of total damage taken. Regenerates after it has absorbed damage. Has a total regeneration pool of 50."
+        ],
+        "details": [
+            {
+                "name": "DAMAGE REDUCTION",
+                "value": "Full"
+            },
+            {
+                "name": "DAMAGE ABSORBED",
+                "value": "100%"
+            },
+            {
+                "name": "REGENERATION POOL",
+                "value": "50"
+            }
+        ],
+        "displayIcon": "https://media.valorant-api.com/gear/b1b9086d-41bd-a516-5d29-e3b34a6f1644/displayicon.png",
+        "assetPath": "ShooterGame/Content/Gear/PlasmaArmor/PlasmaArmor_PrimaryAsset",
+        "shopData": {
+            "cost": 650,
+            "category": "Armor",
+            "shopOrderPriority": 0,
+            "categoryText": "Shields",
+            "gridPosition": null,
+            "canBeTrashed": false,
+            "image": null,
+            "newImage": "https://media.valorant-api.com/gear/b1b9086d-41bd-a516-5d29-e3b34a6f1644/shop/newimage.png",
+            "newImage2": null,
+            "assetPath": "ShooterGame/Content/Gear/PlasmaArmor/PlasmaArmorPurchasable"
+        }
+    }
+]
