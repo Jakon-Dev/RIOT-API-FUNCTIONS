@@ -3,6 +3,9 @@ import json
 import os
 
 class GLOBALS:
+    
+    # DATA NOT EXTRACTED FROM OFFICIAL RIOT API, BUT FROM 'https://valorant-api.com'
+    
     URLS = [
         "https://valorant-api.com/v1/agents",
         "https://valorant-api.com/v1/maps",
@@ -24,24 +27,25 @@ class GLOBALS:
 
     
 
-def update():
-    def update_json(url, file):
+def update() -> None:
+    '''
+        Updates data from 'https://valorant-api.com', this info should be static 
+        but can change once in a while because of Valorant game updates.
+        
+    '''
+    for url, file in zip(GLOBALS.URLS, GLOBALS.FILES):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
             with open(file, "w") as f:
                 json.dump(data["data"], f, indent=4)
 
-    for url, file in zip(GLOBALS.URLS, GLOBALS.FILES):
-        update_json(url, file)
-
-def delete():
+def delete() -> None:
+    '''
+        Deletes data from 'https://valorant-api.com'.
+        
+    '''
+    
     for file in GLOBALS.FILES:
         if os.path.exists(file):
             os.remove(file)
-
-
-
-if __name__ == "__main__":
-    update()
-    delete()
