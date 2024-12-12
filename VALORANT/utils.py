@@ -207,14 +207,19 @@ class RIOT_USERS:
         return data.get("puuid")
             
     
-    def get_name_by_puuid():
-        pass
-
-
-
-
-
-
+    def get_name_by_puuid(puuid: str) -> str:
+        if not FUNCTIONS.isPuuidFormat(puuid):
+            raise ValueError(f"Not valid puuid format {puuid}")
+        
+        data = DATA_BASE.RIOT_USERS.search(puuid, "puuid")
+        if not data:
+            data = API_CALLS.getRiotUserInfo(puuid)
+            if data:
+                name = data.get("gameName") + "#" + data.get("tagLine")
+                DATA_BASE.RIOT_USERS.upsert(puuid, name, data)
+        
+        return data.get("gameName") + "#" + data.get("tagLine")
+        
 
 class FUNCTIONS:
     def wait() -> None:

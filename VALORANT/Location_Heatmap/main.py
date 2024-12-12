@@ -18,7 +18,9 @@ def run(parameter = None) -> None:
         print()
         parameter = input("Insert valid player name: ")
     
-    print(utils.RIOT_USERS.get_puuid_by_name(parameter))
+    puuid = utils.RIOT_USERS.get_puuid_by_name(parameter)
+    
+    print(utils.RIOT_USERS.get_name_by_puuid(puuid))
 
         
     

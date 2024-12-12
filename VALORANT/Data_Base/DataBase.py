@@ -45,14 +45,15 @@ class RIOT_USERS:
         else:
             existing_df = pd.DataFrame(columns=['puuid', 'fullName', 'infoJson'])
         
-        new_data = pd.DataFrame(table.data)
-        new_data['infoJson'] = new_data['infoJson'].apply(lambda x: json.dumps(x))
-        
-        if not existing_df.empty:
-            existing_df = existing_df[~existing_df['puuid'].isin(new_data['puuid'])]  
-        
-        updated_df = pd.concat([existing_df, new_data], ignore_index=True)
-        updated_df.to_csv(file_path, index=False)
+        if table.data:
+            new_data = pd.DataFrame(table.data)
+            new_data['infoJson'] = new_data['infoJson'].apply(lambda x: json.dumps(x))
+            
+            if not existing_df.empty:
+                existing_df = existing_df[~existing_df['puuid'].isin(new_data['puuid'])]  
+            
+            updated_df = pd.concat([existing_df, new_data], ignore_index=True)
+            updated_df.to_csv(file_path, index=False)
     
     def search(value: str, search: str = "puuid") -> json:
         """
