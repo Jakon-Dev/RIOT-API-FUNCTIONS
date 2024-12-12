@@ -49,3 +49,27 @@ def delete() -> None:
     for file in GLOBALS.FILES:
         if os.path.exists(file):
             os.remove(file)
+
+def getAgents() -> json:
+    with open("VALORANT/Static_Game_Data/agents.json", "r") as f:
+        return json.load(f)
+def getMaps() -> json:
+    with open("VALORANT/Static_Game_Data/maps.json", "r") as f:
+        return json.load(f)
+def getPlayerCards() -> json:
+    with open("VALORANT/Static_Game_Data/playercards.json", "r") as f:
+        return json.load(f)
+def getPlayerTitles() -> json:
+    with open("VALORANT/Static_Game_Data/playertitles.json", "r") as f:
+        return json.load(f)
+def getWeapons() -> json:
+    with open("VALORANT/Static_Game_Data/weapons.json", "r") as f:
+        return json.load(f)
+def getGear() -> json:
+    with open("VALORANT/Static_Game_Data/gear.json", "r") as f:
+        return json.load(f)
+
+    
+    
+
+    
