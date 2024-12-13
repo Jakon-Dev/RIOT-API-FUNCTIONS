@@ -11,8 +11,13 @@ import SECRET_DATA as SECRETS
 
 
 from Static_Game_Data import StaticGameData
+from Static_Game_Data import processer as StaticDataProcesser
 from Data_Base import DataBase as DB
 
+class SETTINGS:
+    WAITING_TIME: int = 120
+    
+    PRINTABLES: bool = False
 
 class GLOBALS:
     '''
@@ -21,25 +26,22 @@ class GLOBALS:
     
     '''
     
-    WAITING_TIME = 120
+   
     
     class DATA_BASE:
-        SUPABASE_URL = SECRETS.SUPABASE_URL
-        SUPABASE_KEY = SECRETS.SUPABASE_KEY
+        SUPABASE_URL: str = SECRETS.SUPABASE_URL
+        SUPABASE_KEY: str = SECRETS.SUPABASE_KEY
     
     class API:
-        API_KEY = SECRETS.RIOT_API_KEY
+        API_KEY: str = SECRETS.RIOT_API_KEY
             
-        MATCH_DATA_URL = "https://eu.api.riotgames.com/val/match/v1/matches/{}?api_key={}"
-        USER_DETAILS_URL = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/{}?api_key={}"
-        TOURNAMENT_DETAILS_URL = "https://api-ggtech.leagueoflegends.com/api/v001/showcase/circuito-tormenta-es/tournament-endpoint/{}"
-        PUUID_DETAILS_URL = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{}/{}?api_key={}"
-        CT_USER_DETAILS_URL = "https://api-ggtech.leagueoflegends.com/api/v001/showcase/circuito-tormenta-es/user/profile/{}?user={}"
-        RECENT_MATCHES_URL = "https://eu.api.riotgames.com/val/match/v1/matchlists/by-puuid/{}?api_key={}"
-        TEAM_DETAILS_URL = "https://api-ggtech.leagueoflegends.com/api/v001/showcase/circuito-tormenta-es/public/team/{}"
-
-
-    
+        MATCH_DATA_URL: str = "https://eu.api.riotgames.com/val/match/v1/matches/{}?api_key={}"
+        USER_DETAILS_URL: str = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/{}?api_key={}"
+        TOURNAMENT_DETAILS_URL: str = "https://api-ggtech.leagueoflegends.com/api/v001/showcase/circuito-tormenta-es/tournament-endpoint/{}"
+        PUUID_DETAILS_URL: str = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{}/{}?api_key={}"
+        CT_USER_DETAILS_URL: str = "https://api-ggtech.leagueoflegends.com/api/v001/showcase/circuito-tormenta-es/user/profile/{}?user={}"
+        RECENT_MATCHES_URL: str = "https://eu.api.riotgames.com/val/match/v1/matchlists/by-puuid/{}?api_key={}"
+        TEAM_DETAILS_URL: str = "https://api-ggtech.leagueoflegends.com/api/v001/showcase/circuito-tormenta-es/public/team/{}"
 
 class API_CALLS:
     '''
@@ -165,6 +167,9 @@ class STATIC_GAME_DATA:
         return StaticGameData.getWeapons()
     def getGear():
         return StaticGameData.getGear()
+    
+    class AGENTS(StaticDataProcesser.AGENTS):
+        pass
 
 class DATA_BASE:
     def update():
@@ -205,8 +210,7 @@ class RIOT_USERS:
                 
             
         return data.get("puuid")
-            
-    
+
     def get_name_by_puuid(puuid: str) -> str:
         if not FUNCTIONS.isPuuidFormat(puuid):
             raise ValueError(f"Not valid puuid format {puuid}")
@@ -219,11 +223,10 @@ class RIOT_USERS:
                 DATA_BASE.RIOT_USERS.upsert(puuid, name, data)
         
         return data.get("gameName") + "#" + data.get("tagLine")
-        
 
 class FUNCTIONS:
     def wait() -> None:
-        with tqdm(range(GLOBALS.WAITING_TIME), unit="segundos", bar_format="{l_bar}{bar:40}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]") as progress_bar:
+        with tqdm(range(SETTINGS.WAITING_TIME), unit="segundos", bar_format="{l_bar}{bar:40}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]") as progress_bar:
             for _ in progress_bar:
                 time.sleep(1)
     
@@ -234,27 +237,27 @@ class FUNCTIONS:
         
         '''
         os.system('cls' if os.name == 'nt' else 'clear')
-        
-        print()
-        print()
-        print(R"######################################################################################################################################################################")
-        print(R"#                                                                                                                                                                    #")
-        print(R"#  ________  ________  ________  ________  _______   ________   ________           ________  _________  ________  ________  _________  ___  ________   ________      #")
-        print(R"# |\   __  \|\   __  \|\   __  \|\   ____\|\  ___ \ |\   ____\ |\   ____\         |\   ____\|\___   ___\\   __  \|\   __  \|\___   ___\\  \|\   ___  \|\   ____\     #")
-        print(R"# \ \  \|\  \ \  \|\  \ \  \|\  \ \  \___|\ \   __/|\ \  \___|_\ \  \___|_        \ \  \___|\|___ \  \_\ \  \|\  \ \  \|\  \|___ \  \_\ \  \ \  \\ \  \ \  \___|     #")
-        print(R"#  \ \   ____\ \   _  _\ \  \\\  \ \  \    \ \  \_|/_\ \_____  \\ \_____  \        \ \_____  \   \ \  \ \ \   __  \ \   _  _\   \ \  \ \ \  \ \  \\ \  \ \  \  ___   #")
-        print(R"#   \ \  \___|\ \  \\  \\ \  \\\  \ \  \____\ \  \_|\ \|____|\  \\|____|\  \        \|____|\  \   \ \  \ \ \  \ \  \ \  \\  \|   \ \  \ \ \  \ \  \\ \  \ \  \|\  \  #")
-        print(R"#    \ \__\    \ \__\\ _\\ \_______\ \_______\ \_______\____\_\  \ ____\_\  \         ____\_\  \   \ \__\ \ \__\ \__\ \__\\ _\    \ \__\ \ \__\ \__\\ \__\ \_______\ #")
-        print(R"#     \|__|     \|__|\|__|\|_______|\|_______|\|_______|\_________\\_________\       |\_________\   \|__|  \|__|\|__|\|__|\|__|    \|__|  \|__|\|__| \|__|\|_______| #")
-        print(R"#                                                      \|_________\|_________|       \|_________|                                                                    #")
-        print(R"#                                                                                                                                                                    #")
-        print(R"#                                           __  __   ____   ____  ____    _____ __  __     __   ____   __  __  ____  __  _                                           #")
-        print(R"#                                          |  \/  | / () \ | _) \| ===|   | () )\ \/ /   __) | / () \ |  |/  // () \|  \| |                                          #")
-        print(R"#                                          |_|\/|_|/__/\__\|____/|____|   |_()_) |__|    \___//__/\__\|__|\__\\____/|_|\__|                                          #")
-        print(R"#                                                                                                                                                                    #")
-        print(R"######################################################################################################################################################################")
-        print()
-        print()
+        if SETTINGS.PRINTABLES:
+            print()
+            print()
+            print(R"######################################################################################################################################################################")
+            print(R"#                                                                                                                                                                    #")
+            print(R"#  ________  ________  ________  ________  _______   ________   ________           ________  _________  ________  ________  _________  ___  ________   ________      #")
+            print(R"# |\   __  \|\   __  \|\   __  \|\   ____\|\  ___ \ |\   ____\ |\   ____\         |\   ____\|\___   ___\\   __  \|\   __  \|\___   ___\\  \|\   ___  \|\   ____\     #")
+            print(R"# \ \  \|\  \ \  \|\  \ \  \|\  \ \  \___|\ \   __/|\ \  \___|_\ \  \___|_        \ \  \___|\|___ \  \_\ \  \|\  \ \  \|\  \|___ \  \_\ \  \ \  \\ \  \ \  \___|     #")
+            print(R"#  \ \   ____\ \   _  _\ \  \\\  \ \  \    \ \  \_|/_\ \_____  \\ \_____  \        \ \_____  \   \ \  \ \ \   __  \ \   _  _\   \ \  \ \ \  \ \  \\ \  \ \  \  ___   #")
+            print(R"#   \ \  \___|\ \  \\  \\ \  \\\  \ \  \____\ \  \_|\ \|____|\  \\|____|\  \        \|____|\  \   \ \  \ \ \  \ \  \ \  \\  \|   \ \  \ \ \  \ \  \\ \  \ \  \|\  \  #")
+            print(R"#    \ \__\    \ \__\\ _\\ \_______\ \_______\ \_______\____\_\  \ ____\_\  \         ____\_\  \   \ \__\ \ \__\ \__\ \__\\ _\    \ \__\ \ \__\ \__\\ \__\ \_______\ #")
+            print(R"#     \|__|     \|__|\|__|\|_______|\|_______|\|_______|\_________\\_________\       |\_________\   \|__|  \|__|\|__|\|__|\|__|    \|__|  \|__|\|__| \|__|\|_______| #")
+            print(R"#                                                      \|_________\|_________|       \|_________|                                                                    #")
+            print(R"#                                                                                                                                                                    #")
+            print(R"#                                           __  __   ____   ____  ____    _____ __  __     __   ____   __  __  ____  __  _                                           #")
+            print(R"#                                          |  \/  | / () \ | _) \| ===|   | () )\ \/ /   __) | / () \ |  |/  // () \|  \| |                                          #")
+            print(R"#                                          |_|\/|_|/__/\__\|____/|____|   |_()_) |__|    \___//__/\__\|__|\__\\____/|_|\__|                                          #")
+            print(R"#                                                                                                                                                                    #")
+            print(R"######################################################################################################################################################################")
+            print()
+            print()
                 
         ALL_DATA.update()
 

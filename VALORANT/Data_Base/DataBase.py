@@ -1,6 +1,5 @@
 import os
 import sys
-from httpx import delete
 import pandas as pd
 import supabase
 from supabase import create_client
@@ -112,14 +111,16 @@ class RIOT_USERS:
         file_path = RIOT_USERS.FILE  # Path to the CSV file
 
         if not os.path.exists(file_path):
-            print("CSV file not found. No data to upload.")
+            if utils.SETTINGS.PRINTABLES:
+                print("CSV file not found. No data to upload.")
             return
 
         # Read the CSV file into a DataFrame
         data_df = pd.read_csv(file_path)
 
         if data_df.empty:
-            print("CSV file is empty. No data to upload.")
+            if utils.SETTINGS.PRINTABLES:
+                print("CSV file is empty. No data to upload.")
             return
 
         # Convert 'infoJson' column back from text to JSON
@@ -131,8 +132,8 @@ class RIOT_USERS:
         # Upload each record to the API
         for record in data_to_upload:
             upsertToTable(RIOT_USERS.TABLE, record)
-
-        print("Data uploaded successfully.")
+        if utils.SETTINGS.PRINTABLES:
+            print("Data uploaded successfully.")
     
     def upsert(puuid: str, fullName: str, infoJson: json) -> None:
         """
@@ -171,7 +172,7 @@ class RIOT_USERS:
             os.remove(file)
 
         
-        
+  
 
 def fetchTable(tableName: str) -> json:
     return supabase.table(tableName).select("*").execute()
