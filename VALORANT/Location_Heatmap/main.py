@@ -27,7 +27,9 @@ def run(parameter = None) -> None:
 
     '''
         
-    print(utils.STATIC_GAME_DATA.AGENTS.GET_UUID.by_name(parameter))    
+    uuid = utils.STATIC_GAME_DATA.MAPS.GET_UUID.by_name(parameter)
+    role_uuid = utils.STATIC_GAME_DATA.MAPS.GET_BY_UUID.description(uuid)
+    print(role_uuid)
 
 run()
 

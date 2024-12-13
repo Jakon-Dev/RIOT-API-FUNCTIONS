@@ -1,3 +1,4 @@
+from tkinter import ALL
 import utils
 import Static_Game_Data.StaticGameData as StaticGameData
 import json
@@ -130,7 +131,7 @@ class AGENTS:
                 return None
             
             def displayIcon(uuid: str) -> str:
-                role = AGENTS.ROLE.all(uuid)
+                role = AGENTS.GET_BY_UUID.ROLE.all(uuid)
                 if role is not None:
                     return role["displayIcon"]
                 return None
@@ -193,23 +194,338 @@ class AGENTS:
             return True
         return False
 
-        
-
-
-
-
 class MAPS:
-    pass
+    ALL_MAPS = StaticGameData.getMaps()
+    
+    class GET_UUID:
+        def by_name(name: str) -> str:
+            for map in MAPS.ALL_MAPS:
+                if map["displayName"] == name:
+                    return map["uuid"]
+            return None
+
+        def by_path(path: str) -> str:
+            for map in MAPS.ALL_MAPS:
+                if map["assetPath"] == path:
+                    return map["uuid"]
+            return None
+        
+        def by_url(url: str) -> str:
+            for map in MAPS.ALL_MAPS:
+                if map["mapUrl"] == url:
+                    return map["uuid"]
+            return None
+
+    class GET_BY_UUID:
+        def map(uuid: str) -> json:
+            for map in MAPS.ALL_MAPS:
+                if map["uuid"] == uuid:
+                    return map
+            return None
+        
+        def name(uuid: str) -> str:
+            map = MAPS.GET_BY_UUID.map(uuid)
+            if map is not None:
+                return map["displayName"]
+            return None
+
+        def images(uuid: str) -> dict:
+            map = MAPS.GET_BY_UUID.map(uuid)
+            if map is not None:
+                images = {
+                    "displayIcon": map["displayIcon"],
+                    "listViewIcon": map["listViewIcon"],
+                    "listViewIconTall": map["listViewIconTall"],
+                    "splash": map["splash"],
+                    "stylizedBackgroundImage": map["stylizedBackgroundImage"],
+                    "premierBackgroundImage": map["premierBackgroundImage"]
+                }
+                return images
+            return None
+
+        def description(uuid: str) -> str:
+            map = MAPS.GET_BY_UUID.map(uuid)
+            if map is not None:
+                return map["tacticalDescription"]
+            return None
+
+        def mapUrl(uuid: str) -> str:
+            map = MAPS.GET_BY_UUID.map(uuid)
+            if map is not None:
+                return map["mapUrl"]
+            return None
+
+        def assetPath(uuid: str) -> str:
+            map = MAPS.GET_BY_UUID.map(uuid)
+            if map is not None:
+                return map["assetPath"]
+            return None
+
+        def callouts(uuid: str) -> json:
+            map = MAPS.GET_BY_UUID.map(uuid)
+            if map is not None:
+                return map["callouts"]
+            return None
+        
+        class DISPLAY:
+            def all_variables(uuid: str) -> list:
+                map = MAPS.GET_BY_UUID.map(uuid)
+                if map is not None:
+                    variables = {
+                        "xMultiplier": map.get("xMultiplier"),
+                        "yMultiplier": map.get("yMultiplier"),
+                        "xScalarToAdd": map.get("xScalarToAdd"),
+                        "yScalarToAdd": map.get("yScalarToAdd")
+                    }
+                    return variables
+                return None
+
+            def xMultiplier(uuid: str) -> float:
+                variables = MAPS.GET_BY_UUID.DISPLAY.all_variables(uuid)
+                if variables is not None:
+                    return variables["xMultiplier"]
+                return None
+            
+            def yMultiplier(uuid: str) -> float:
+                variables = MAPS.GET_BY_UUID.DISPLAY.all_variables(uuid)
+                if variables is not None:
+                    return variables["yMultiplier"]
+                return None
+            
+            def xScalarToAdd(uuid: str) -> float:
+                variables = MAPS.GET_BY_UUID.DISPLAY.all_variables(uuid)
+                if variables is not None:
+                    return variables["xScalarToAdd"]
+                return None
+            
+            def yScalarToAdd(uuid: str) -> float:
+                variables = MAPS.GET_BY_UUID.DISPLAY.all_variables(uuid)
+                if variables is not None:
+                    return variables["yScalarToAdd"]
+                return None
+
+            def displayImage(uuid: str) -> str:
+                images = MAPS.GET_BY_UUID.images(uuid)
+                if images is not None:
+                    return images["displayIcon"]
+                return None
 
 class PLAYERCARDS:
-    pass
+    ALL_PLAYER_CARDS = StaticGameData.getPlayerCards()
+
+    class GET_UUID:
+        def by_name(name: str) -> str:
+            for card in PLAYERCARDS.ALL_PLAYER_CARDS:
+                if card["displayName"] == name:
+                    return card["uuid"]
+            return None
+
+        def by_path(path: str) -> str:
+            for card in PLAYERCARDS.ALL_PLAYER_CARDS:
+                if card["assetPath"] == path:
+                    return card["uuid"]
+            return None
+
+    class GET_BY_UUID:
+        def card(uuid: str) -> json:
+            for card in PLAYERCARDS.ALL_PLAYER_CARDS:
+                if card["uuid"] == uuid:
+                    return card
+            return None
+        
+        def name(uuid: str) -> str:
+            card = PLAYERCARDS.GET_BY_UUID.card(uuid)
+            if card is not None:
+                return card["displayName"]
+            return None
+
+        def images(uuid: str) -> dict:
+            card = PLAYERCARDS.GET_BY_UUID.card(uuid)
+            if card is not None:
+                images = {
+                    "displayIcon": card["displayIcon"],
+                    "smallArt": card["smallArt"],
+                    "wideArt": card["wideArt"],
+                    "largeArt": card["largeArt"]
+                }
+                return images
+            return None
+
+        def assetPath(uuid: str) -> str:
+            card = PLAYERCARDS.GET_BY_UUID.card(uuid)
+            if card is not None:
+                return card["assetPath"]
+            return None
 
 class PLAYERTITLES:
-    pass
+    ALL_PLAYER_TITLES = StaticGameData.getPlayerTitles()
+
+    class GET_UUID:
+        def by_name(name: str) -> str:
+            for title in PLAYERTITLES.ALL_PLAYER_TITLES:
+                if title["displayName"] == name:
+                    return title["uuid"]
+            return None
+
+        def by_path(path: str) -> str:
+            for title in PLAYERTITLES.ALL_PLAYER_TITLES:
+                if title["assetPath"] == path:
+                    return title["uuid"]
+            return None
+        
+        def by_title(title: str) -> str:
+            for title in PLAYERTITLES.ALL_PLAYER_TITLES:
+                if title["titleText"] == title:
+                    return title["uuid"]
+            return None
+
+    class GET_BY_UUID:
+        def player_title(uuid: str) -> json:
+            for title in PLAYERTITLES.ALL_PLAYER_TITLES:
+                if title["uuid"] == uuid:
+                    return title
+            return None
+        
+        def name(uuid: str) -> str:
+            title = PLAYERTITLES.GET_BY_UUID.title(uuid)
+            if title is not None:
+                return title["displayName"]
+            return None
+
+        def title(uuid: str) -> str:
+            title = PLAYERTITLES.GET_BY_UUID.title(uuid)
+            if title is not None:
+                return title["titleText"]
+            return None
+
+        def path(uuid: str) -> str:
+            title = PLAYERTITLES.GET_BY_UUID.title(uuid)
+            if title is not None:
+                return title["assetPath"]
+            return None
 
 class WEAPONS:
-    pass
+    ALL_WEAPONS = StaticGameData.getWeapons()
+    
+    class GET_UUID:
+        def by_name(name: str) -> str:
+            for weapon in WEAPONS.ALL_WEAPONS:
+                if weapon["displayName"] == name:
+                    return weapon["uuid"]
+            return None
+        
+        def by_default_skin_uuid(uuid: str) -> str:
+            for weapon in WEAPONS.ALL_WEAPONS:
+                if weapon["defaultSkinUuid"] == uuid:
+                    return weapon["uuid"]
+            return None
+
+    class GET_BY_UUID:
+        def weapon(uuid: str) -> json:
+            for weapon in WEAPONS.ALL_WEAPONS:
+                if weapon["uuid"] == uuid:
+                    return weapon
+            return None
+        
+        def name(uuid: str) -> str:
+            weapon = WEAPONS.GET_BY_UUID.weapon(uuid)
+            if weapon is not None:
+                return weapon["displayName"]
+            return None
+        
+        def images(uuid: str) -> dict:
+            weapon = WEAPONS.GET_BY_UUID.weapon(uuid)
+            if weapon is not None:
+                images = {
+                    "displayIcon": weapon["displayIcon"],
+                    "killStreamIcon": weapon["killfeedIcon"],
+                    "shopImage": weapon["shopData"]["newImage"]
+                }
+                return images
+            return None
+        
+        def stats(uuid: str) -> json:
+            weapon = WEAPONS.GET_BY_UUID.weapon(uuid)
+            if weapon is not None:
+                return weapon["weaponStats"]
+            return None
+        
+        def shopData(uuid: str) -> json:
+            weapon = WEAPONS.GET_BY_UUID.weapon(uuid)
+            if weapon is not None:
+                return weapon["shopData"]
+            return None
+        
+        def skins(uuid: str) -> json:
+            weapon = WEAPONS.GET_BY_UUID.shopData(uuid)
+            if weapon is not None:
+                return weapon["skins"]
+            return None
 
 class GEAR:
-    pass
+    ALL_GEAR = StaticGameData.getGear()
+    
+    class GET_UUID:
+        def by_name(name: str) -> str:
+            for gear in GEAR.ALL_GEAR:
+                if gear["displayName"] == name:
+                    return gear["uuid"]
+            return None
+        
+        def by_path(path: str) -> str:
+            for gear in GEAR.ALL_GEAR:
+                if gear["assetPath"] == path:
+                    return gear["uuid"]
+            return None
+        
+        def by_cost(cost: int) -> str:
+            for gear in GEAR.ALL_GEAR:
+                if gear["shopData"]["cost"] == cost:
+                    return gear["uuid"]
+            return None
+        
+    class GET_BY_UUID:
+        def gear(uuid: str) -> json:
+            for gear in GEAR.ALL_GEAR:
+                if gear["uuid"] == uuid:
+                    return gear
+            return None
+        
+        def name(uuid: str) -> str:
+            gear = GEAR.GET_BY_UUID.gear(uuid)
+            if gear is not None:
+                return gear["displayName"]
+            return None
+        
+        def image(uuid: str) -> str:
+            gear = GEAR.GET_BY_UUID.gear(uuid)
+            if gear is not None:
+                return gear["displayIcon"]
+            return None
+        
+        def description(uuid: str) -> str:
+            gear = GEAR.GET_BY_UUID.gear(uuid)
+            if gear is not None:
+                return gear["description"]
+            return None
+        
+        def shopData(uuid: str) -> json:
+            gear = GEAR.GET_BY_UUID.gear(uuid)
+            if gear is not None:
+                return gear["shopData"]
+            return None
+
+        def details(uuid: str) -> json:
+            gear = GEAR.GET_BY_UUID.gear(uuid)
+            if gear is not None:
+                return gear["details"]
+            return None
+        
+        def path(uuid: str) -> str:
+            gear = GEAR.GET_BY_UUID.gear(uuid)
+            if gear is not None:
+                return gear["assetPath"]
+            return None
+
+
 

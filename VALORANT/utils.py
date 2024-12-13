@@ -170,6 +170,21 @@ class STATIC_GAME_DATA:
     
     class AGENTS(StaticDataProcesser.AGENTS):
         pass
+    
+    class MAPS(StaticDataProcesser.MAPS):
+        pass
+    
+    class PLAYERCARDS(StaticDataProcesser.PLAYERCARDS):
+        pass
+    
+    class PLAYERTITLES(StaticDataProcesser.PLAYERTITLES):
+        pass
+    
+    class WEAPONS(StaticDataProcesser.WEAPONS):
+        pass
+    
+    class GEAR(StaticDataProcesser.GEAR):
+        pass
 
 class DATA_BASE:
     def update():
