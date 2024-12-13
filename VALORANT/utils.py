@@ -17,7 +17,7 @@ from Data_Base import DataBase as DB
 class SETTINGS:
     WAITING_TIME: int = 120
     
-    PRINTABLES: bool = False
+    PRINTABLES: bool = True
 
 class GLOBALS:
     '''
