@@ -171,7 +171,7 @@ class RIOT_USERS:
         if os.path.exists(file):
             os.remove(file)
 
-        
+ 
   
 
 def fetchTable(tableName: str) -> json:

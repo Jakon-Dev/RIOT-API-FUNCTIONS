@@ -13,14 +13,13 @@ def run(parameter = None) -> None:
     if not parameter:
         parameter = input("Insert player name: ")
     
-    
+    '''
     while not utils.FUNCTIONS.isFullName(parameter):
         print("Name not valid, valid format example is Jakon#Coach")
         print()
         parameter = input("Insert valid player name: ")
-    
-    
-    
+    '''
+    utils.MATCH_OOP.Match.create(parameter)
 
     
 

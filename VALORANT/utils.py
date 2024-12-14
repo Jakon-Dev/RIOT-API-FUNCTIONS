@@ -13,6 +13,10 @@ import SECRET_DATA as SECRETS
 from Static_Game_Data import StaticGameData
 from Static_Game_Data import processer as StaticDataProcesser
 from Data_Base import DataBase as DB
+import Match_OOP_Processing.Match
+import Match_OOP_Processing.All
+
+
 
 class SETTINGS:
     WAITING_TIME: int = 120
@@ -138,107 +142,121 @@ class API_CALLS:
     
 class ALL_DATA:
     def update():
-        STATIC_GAME_DATA.update()
-        DATA_BASE.update()
+        ALL_DATA.STATIC_GAME_DATA.update()
+        ALL_DATA.DATA_BASE.update()
     
     def delete():
-        STATIC_GAME_DATA.delete()
-
-class STATIC_GAME_DATA:
-    '''
-        Static Game Data functions but accessed from here for better access from other files.
-    
-    '''
-    
-    def update():
-        StaticGameData.update()
-    def delete():
-        StaticGameData.delete()
-    
-    def getAgents():
-        return StaticGameData.getAgents()
-    def getMaps():
-        return StaticGameData.getMaps()
-    def getPlayerCards():
-        return StaticGameData.getPlayerCards()
-    def getPlayerTitles():
-        return StaticGameData.getPlayerTitles()
-    def getWeapons():
-        return StaticGameData.getWeapons()
-    def getGear():
-        return StaticGameData.getGear()
-    
-    class AGENTS(StaticDataProcesser.AGENTS):
-        pass
-    
-    class MAPS(StaticDataProcesser.MAPS):
-        pass
-    
-    class PLAYERCARDS(StaticDataProcesser.PLAYERCARDS):
-        pass
-    
-    class PLAYERTITLES(StaticDataProcesser.PLAYERTITLES):
-        pass
-    
-    class WEAPONS(StaticDataProcesser.WEAPONS):
-        pass
-    
-    class GEAR(StaticDataProcesser.GEAR):
-        pass
-
-class DATA_BASE:
-    def update():
-        DATA_BASE.RIOT_USERS.update()
-    
-    def delete():
-        DATA_BASE.RIOT_USERS.delete()
-    
-    def upload():
-        DATA_BASE.RIOT_USERS.upload()
-    
-    class RIOT_USERS:
+        ALL_DATA.STATIC_GAME_DATA.delete()
+        
+    class DATA_BASE:
         def update():
-            DB.RIOT_USERS.update()
-        def upload():
-            DB.RIOT_USERS.upload()
+            ALL_DATA.DATA_BASE.RIOT_USERS.update()
+        
         def delete():
-            DB.RIOT_USERS.delete()
-    
-        def search(value: str, search: str = "puuid") -> json:
-            return DB.RIOT_USERS.search(value, search)
-
-        def upsert(puuid: str, fullName: str, info_json: str) -> None:
-            DB.RIOT_USERS.upsert(puuid, fullName, info_json)
-
-class RIOT_USERS:
-    def get_puuid_by_name(name: str) -> str:
-        if not FUNCTIONS.isFullName(name):
-            raise ValueError(f"Not valid name format {name}")
+            ALL_DATA.DATA_BASE.RIOT_USERS.delete()
         
-        data = DATA_BASE.RIOT_USERS.search(name, "fullName")
-        if not data:
-            data = API_CALLS.getPuuidAPIjson(name)
-            if data:
-                puuid = data.get("puuid")
-                DATA_BASE.RIOT_USERS.upsert(puuid, name, data)
-                
-                
+        def upload():
+            ALL_DATA.DATA_BASE.RIOT_USERS.upload()
+        
+        class RIOT_USERS:
+            def update():
+                DB.RIOT_USERS.update()
+            def upload():
+                DB.RIOT_USERS.upload()
+            def delete():
+                DB.RIOT_USERS.delete()
+        
+            def search(value: str, search: str = "puuid") -> json:
+                return DB.RIOT_USERS.search(value, search)
+
+            def upsert(puuid: str, fullName: str, info_json: str) -> None:
+                DB.RIOT_USERS.upsert(puuid, fullName, info_json)
+
+
+    class STATIC_GAME_DATA:
+        '''
+            Static Game Data functions but accessed from here for better access from other files.
+        
+        '''
+        
+        def update():
+            StaticGameData.update()
+        def delete():
+            StaticGameData.delete()
+        
+        def getAgents():
+            return StaticGameData.getAgents()
+        def getMaps():
+            return StaticGameData.getMaps()
+        def getPlayerCards():
+            return StaticGameData.getPlayerCards()
+        def getPlayerTitles():
+            return StaticGameData.getPlayerTitles()
+        def getWeapons():
+            return StaticGameData.getWeapons()
+        def getGear():
+            return StaticGameData.getGear()
+        
+        class AGENTS(StaticDataProcesser.AGENTS):
+            pass
+        
+        class MAPS(StaticDataProcesser.MAPS):
+            pass
+        
+        class PLAYERCARDS(StaticDataProcesser.PLAYERCARDS):
+            pass
+        
+        class PLAYERTITLES(StaticDataProcesser.PLAYERTITLES):
+            pass
+        
+        class WEAPONS(StaticDataProcesser.WEAPONS):
+            pass
+        
+        class GEAR(StaticDataProcesser.GEAR):
+            pass
+
+class MATCH_OOP:
+    class Match(Match_OOP_Processing.Match.Match):
+        pass
+
+
+class DATA_FINDERS:
+    class RIOT_USERS:
+        def get_puuid_by_name(name: str) -> str:
+            if not FUNCTIONS.isFullName(name):
+                raise ValueError(f"Not valid name format {name}")
             
-        return data.get("puuid")
+            data = ALL_DATA.DATA_BASE.RIOT_USERS.search(name, "fullName")
+            if not data:
+                data = API_CALLS.getPuuidAPIjson(name)
+                if data:
+                    puuid = data.get("puuid")
+                    ALL_DATA.DATA_BASE.RIOT_USERS.upsert(puuid, name, data)
+                    
+                    
+                
+            return data.get("puuid")
 
-    def get_name_by_puuid(puuid: str) -> str:
-        if not FUNCTIONS.isPuuidFormat(puuid):
-            raise ValueError(f"Not valid puuid format {puuid}")
-        
-        data = DATA_BASE.RIOT_USERS.search(puuid, "puuid")
-        if not data:
-            data = API_CALLS.getRiotUserInfo(puuid)
-            if data:
-                name = data.get("gameName") + "#" + data.get("tagLine")
-                DATA_BASE.RIOT_USERS.upsert(puuid, name, data)
-        
-        return data.get("gameName") + "#" + data.get("tagLine")
+        def get_name_by_puuid(puuid: str) -> str:
+            if not FUNCTIONS.isPuuidFormat(puuid):
+                raise ValueError(f"Not valid puuid format {puuid}")
+            
+            data = ALL_DATA.DATA_BASE.RIOT_USERS.search(puuid, "puuid")
+            if not data:
+                data = API_CALLS.getRiotUserInfo(puuid)
+                if data:
+                    name = data.get("gameName") + "#" + data.get("tagLine")
+                    ALL_DATA.DATA_BASE.RIOT_USERS.upsert(puuid, name, data)
+            
+            return data.get("gameName") + "#" + data.get("tagLine")
 
+    class RIOT_MATCHES:
+        def get_json_by_matchId(matchId: str) -> json:
+            pass
+        
+        
+    
+    
 class FUNCTIONS:
     def wait() -> None:
         with tqdm(range(SETTINGS.WAITING_TIME), unit="segundos", bar_format="{l_bar}{bar:40}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]") as progress_bar:
@@ -277,8 +295,8 @@ class FUNCTIONS:
         ALL_DATA.update()
 
     def end_process() -> None:
-        DATA_BASE.upload()
-        DATA_BASE.delete()
+        ALL_DATA.DATA_BASE.upload()
+        ALL_DATA.DATA_BASE.delete()
     
     def isFullName(name: str) -> bool:
         """
