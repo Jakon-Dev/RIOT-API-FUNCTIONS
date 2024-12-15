@@ -1,5 +1,4 @@
 import json
-from turtle import update
 import requests
 from tqdm import tqdm
 import time
@@ -147,32 +146,30 @@ class ALL_DATA:
     
     def delete():
         ALL_DATA.STATIC_GAME_DATA.delete()
+        ALL_DATA.DATA_BASE.delete()
+
         
     class DATA_BASE:
         def update():
             ALL_DATA.DATA_BASE.RIOT_USERS.update()
+            ALL_DATA.DATA_BASE.RIOT_MATCHES.update()
         
         def delete():
             ALL_DATA.DATA_BASE.RIOT_USERS.delete()
+            ALL_DATA.DATA_BASE.RIOT_MATCHES.delete()
+
         
         def upload():
             ALL_DATA.DATA_BASE.RIOT_USERS.upload()
+            ALL_DATA.DATA_BASE.RIOT_MATCHES.upload()
+
         
-        class RIOT_USERS:
-            def update():
-                DB.RIOT_USERS.update()
-            def upload():
-                DB.RIOT_USERS.upload()
-            def delete():
-                DB.RIOT_USERS.delete()
+        class RIOT_USERS(DB.RIOT_USERS):
+            pass
         
-            def search(value: str, search: str = "puuid") -> json:
-                return DB.RIOT_USERS.search(value, search)
-
-            def upsert(puuid: str, fullName: str, info_json: str) -> None:
-                DB.RIOT_USERS.upsert(puuid, fullName, info_json)
-
-
+        class RIOT_MATCHES(DB.RIOT_MATCHES):
+            pass
+    
     class STATIC_GAME_DATA:
         '''
             Static Game Data functions but accessed from here for better access from other files.
@@ -250,9 +247,26 @@ class DATA_FINDERS:
             
             return data.get("gameName") + "#" + data.get("tagLine")
 
+        def get_db_matches_by_puuid(puuid: str) -> list:
+            if not FUNCTIONS.isPuuidFormat(puuid):
+                raise ValueError(f"Not valid puuid format {puuid}")
+            
+            
+
+
     class RIOT_MATCHES:
         def get_json_by_matchId(matchId: str) -> json:
-            pass
+            if not FUNCTIONS.isUuidFormat(matchId):
+                raise ValueError(f"Not valid matchId format {matchId}")
+            
+            data = ALL_DATA.DATA_BASE.RIOT_MATCHES.search(matchId)
+            if not data:
+                data = API_CALLS.getRiotMatchData(matchId)
+            return data
+        
+        def get_played_matches_by_puuid(puuid: str) -> list:
+            return DB.RIOT_MATCHES.played_matches_by_puuid(puuid)
+
         
         
     

@@ -11,7 +11,7 @@ utils.FUNCTIONS.start_process()
 def run(parameter = None) -> None:
     
     if not parameter:
-        parameter = input("Insert player name: ")
+        parameter = input("Insert matchId name: ")
     
     '''
     while not utils.FUNCTIONS.isFullName(parameter):
@@ -20,6 +20,9 @@ def run(parameter = None) -> None:
         parameter = input("Insert valid player name: ")
     '''
     utils.MATCH_OOP.Match.create(parameter)
+    
+    parameter = input("Insert player name: ")
+    print(f"Played matches: {utils.DATA_FINDERS.RIOT_MATCHES.get_played_matches_by_puuid(parameter)}")
 
     
 
