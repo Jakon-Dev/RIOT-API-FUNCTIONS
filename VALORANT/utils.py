@@ -4,6 +4,8 @@ from tqdm import tqdm
 import time
 import re
 import os
+import datetime
+import pytz
 
 
 import SECRET_DATA as SECRETS
@@ -216,7 +218,6 @@ class MATCH_OOP:
     class Match(Match_OOP_Processing.Match.Match):
         pass
 
-
 class DATA_FINDERS:
     class RIOT_USERS:
         def get_puuid_by_name(name: str) -> str:
@@ -265,11 +266,7 @@ class DATA_FINDERS:
             return data
         
         def get_played_matches_by_puuid(puuid: str) -> list:
-            return DB.RIOT_MATCHES.played_matches_by_puuid(puuid)
-
-        
-        
-    
+            return DB.RIOT_MATCHES.played_matches_by_puuid(puuid)  
     
 class FUNCTIONS:
     def wait() -> None:
@@ -335,4 +332,22 @@ class FUNCTIONS:
     def isPuuidFormat(puuid: str) -> bool:
         puuid_regex = r'^[0-9a-zA-Z\-_]{78}$'
         return bool(re.match(puuid_regex, puuid))
+        
+    class TIME():
+        def millis_to_date(millis):
+            return datetime.datetime.fromtimestamp(millis / 1000.0, tz=datetime.timezone.utc).astimezone(pytz.timezone('Europe/Berlin')).strftime("%d-%m-%Y %H:%M")
+
+        def millis_to_time(millis):
+            seconds = (millis / 1000) % 60
+            seconds = int(seconds)
+            minutes = (millis / (1000 * 60)) % 60
+            minutes = int(minutes)
+            hours = (millis / (1000 * 60 * 60))
+            hours = int(hours)
+
+            if hours == 0:
+                return f"{minutes:02d}m {seconds:02d}s"
+            else:
+                return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+        
         
