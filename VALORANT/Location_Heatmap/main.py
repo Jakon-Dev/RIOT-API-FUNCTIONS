@@ -47,26 +47,29 @@ def run( side: str = None, parameter:str = None) -> None:
     elif side == "atk":
         locations = [location for location in locations if location.side == "atk"]
     
+    
     static_maps = utils.ALL_DATA.STATIC_GAME_DATA.getMaps()
     
-    mapsList = []
+    def get_mapsLists():
+        for map in static_maps:
+            result = []
+            map_uuid = map["uuid"]
+            dict = {
+                "image_url": map["displayIcon"],
+                "points": [],
+                "x_multiplier": map["xMultiplier"],
+                "y_multiplier": map["yMultiplier"],
+                "x_scalar_to_add": map["xScalarToAdd"],
+                "y_scalar_to_add": map["yScalarToAdd"]
+            }
+            for location in locations:
+                if location.mapUuid == map_uuid:
+                    dict["points"].append({"x": location.x, "y": location.y})
+            if not dict["points"]:
+                continue
+            result.append(dict)
+    mapsList = get_mapsLists()
     
-    for map in static_maps:
-        map_uuid = map["uuid"]
-        dict = {
-            "image_url": map["displayIcon"],
-            "points": [],
-            "x_multiplier": map["xMultiplier"],
-            "y_multiplier": map["yMultiplier"],
-            "x_scalar_to_add": map["xScalarToAdd"],
-            "y_scalar_to_add": map["yScalarToAdd"]
-        }
-        for location in locations:
-            if location.mapUuid == map_uuid:
-                dict["points"].append({"x": location.x, "y": location.y})
-        if not dict["points"]:
-            continue
-        mapsList.append(dict)
 
     for map in mapsList:
         generate_heatmap(map["image_url"], map["points"], map["x_multiplier"], map["y_multiplier"], map["x_scalar_to_add"], map["y_scalar_to_add"])

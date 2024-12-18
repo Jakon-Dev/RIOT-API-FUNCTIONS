@@ -86,9 +86,9 @@ class FUNTIONS:
 
     def help(*args):
         if args[0] == "":
-            print("\n".join([f"{cmd}: {details['definition']}" for cmd, details in COMMANDS.items()]))
+            print("\n".join([f"    {cmd}: {details['definition']}" for cmd, details in COMMANDS.items()]))
         elif args[0] in COMMANDS:
-            print(f"\n{args[0]}: {COMMANDS[args[0]]['definition']}\nParameters: {COMMANDS[args[0]]['params']}")
+            print(f"\n    {args[0]}: {COMMANDS[args[0]]['definition']}\nParameters: {COMMANDS[args[0]]['params']}")
         else:
             print(f"Command '{args[0]}' not found. Type 'help' for a list of commands.")
     

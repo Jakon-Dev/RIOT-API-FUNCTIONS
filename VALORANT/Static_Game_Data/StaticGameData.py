@@ -1,6 +1,8 @@
 import requests
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor
+
 
 class GLOBALS:
     
@@ -29,16 +31,20 @@ class GLOBALS:
 
 def update() -> None:
     '''
-        Updates data from 'https://valorant-api.com', this info should be static 
-        but can change once in a while because of Valorant game updates.
-        
+    Updates data from 'https://valorant-api.com'. This info should be static 
+    but can change once in a while because of Valorant game updates.
     '''
-    for url, file in zip(GLOBALS.URLS, GLOBALS.FILES):
+    def fetch_and_save(url, file):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
             with open(file, "w") as f:
                 json.dump(data["data"], f, indent=4)
+        else:
+            print(f"Failed to fetch {url}: {response.status_code}")
+
+    with ThreadPoolExecutor() as executor:
+        executor.map(fetch_and_save, GLOBALS.URLS, GLOBALS.FILES)
 
 def delete() -> None:
     '''

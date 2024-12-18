@@ -6,7 +6,7 @@ import re
 import os
 import datetime
 import pytz
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 
 import SECRET_DATA as SECRETS
@@ -164,29 +164,56 @@ class API_CALLS:
             return None
 
     
+from concurrent.futures import ThreadPoolExecutor
+
 class ALL_DATA:
+    @staticmethod
     def update():
-        ALL_DATA.STATIC_GAME_DATA.update()
-        ALL_DATA.DATA_BASE.update()
-    
+        with ThreadPoolExecutor() as executor:
+            futures = [
+                executor.submit(ALL_DATA.STATIC_GAME_DATA.update),
+                executor.submit(ALL_DATA.DATA_BASE.update)
+            ]
+            for future in futures:
+                future.result()
+
+    @staticmethod
     def delete():
-        ALL_DATA.STATIC_GAME_DATA.delete()
-        ALL_DATA.DATA_BASE.delete()
+        with ThreadPoolExecutor() as executor:
+            futures = [
+                executor.submit(ALL_DATA.STATIC_GAME_DATA.delete),
+                executor.submit(ALL_DATA.DATA_BASE.delete)
+            ]
+            for future in futures:
+                future.result()
+
 
         
     class DATA_BASE:
+        @staticmethod
         def update():
-            ALL_DATA.DATA_BASE.RIOT_USERS.update()
-            ALL_DATA.DATA_BASE.RIOT_MATCHES.update()
-        
-        def delete():
-            ALL_DATA.DATA_BASE.RIOT_USERS.delete()
-            ALL_DATA.DATA_BASE.RIOT_MATCHES.delete()
+            with ThreadPoolExecutor() as executor:
+                futures = [
+                    executor.submit(ALL_DATA.DATA_BASE.RIOT_USERS.update),
+                    executor.submit(ALL_DATA.DATA_BASE.RIOT_MATCHES.update)
+                ]
+                for future in futures:
+                    future.result()
 
-        
+        @staticmethod
+        def delete():
+            with ThreadPoolExecutor() as executor:
+                futures = [
+                    executor.submit(ALL_DATA.DATA_BASE.RIOT_USERS.delete),
+                    executor.submit(ALL_DATA.DATA_BASE.RIOT_MATCHES.delete)
+                ]
+                for future in futures:
+                    future.result()
+        @staticmethod
         def upload():
             ALL_DATA.DATA_BASE.RIOT_USERS.upload()
             ALL_DATA.DATA_BASE.RIOT_MATCHES.upload()
+
 
         
         class RIOT_USERS(DB.RIOT_USERS):
