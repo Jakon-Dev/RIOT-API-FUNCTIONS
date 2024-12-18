@@ -4,6 +4,10 @@ import sys
 import utils
 import Location_Heatmap.main as Location_Heatmap
 import Match_OOP_Processing.All as All_Classes
+import matplotlib.pyplot as plt
+from IPython.display import display
+import ipywidgets as widgets
+
 
 
 
@@ -21,59 +25,67 @@ utils.FUNCTIONS.start_process()
 class FUNTIONS:
     
     def load(*args):
+        
+        def load_games(*args):
+            for matchId in args:
+                if utils.FUNCTIONS.isUuidFormat(matchId):
+                    utils.MATCH_OOP.Match.create(matchId)
+                else:
+                    print(f"{matchId} is not a valid matchId")
+        
+        def load_users(*args):
+            for param in args:
+                if utils.FUNCTIONS.isFullName(param):
+                    player = utils.MATCH_OOP.Player.find_player_with_puuid(utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(param))
+                    print(f"Uploaded {player.fullName}")
+                elif utils.FUNCTIONS.isPuuidFormat(param):
+                    player = utils.MATCH_OOP.Player.find_player_with_puuid(param)
+                    print(f"Uploaded {player.fullName}")
+                else:
+                    print(f"{param} is not a valid player name or puuid")
+
+        def load_comp_history(*args):
+            for param in args:
+                if utils.FUNCTIONS.isPuuidFormat(param):
+                    puuid = param
+                else:
+                    puuid = utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(param)
+            matchHistory = utils.API_CALLS.getMatchHistory(puuid)
+            for match in matchHistory["history"]:
+                if match["queueId"] == "competitive" or match["queueId"] == "":
+                    matchId = match["matchId"]
+                    try:
+                        utils.MATCH_OOP.Match.create(matchId)
+                    except Exception as e:
+                        print(f"Error loading match {matchId}: {e}")
+    
         if args[0] == "games":
-            FUNTIONS.load_games(*args[1:])
+            load_games(*args[1:])
         elif args[0] == "users":
-            FUNTIONS.load_users(*args[1:])
+            load_users(*args[1:])
         elif args[0] == "history":
-            FUNTIONS.load_comp_history(*args[1:])
+            load_comp_history(*args[1:])
         else:
             print(f"Invalid load type '{args[0]}'")
 
-    def load_games(*args):
-        for matchId in args:
-            if utils.FUNCTIONS.isUuidFormat(matchId):
-                utils.MATCH_OOP.Match.create(matchId)
-            else:
-                print(f"{matchId} is not a valid matchId")
-    
-    def load_users(*args):
-        for param in args:
-            if utils.FUNCTIONS.isFullName(param):
-                player = utils.MATCH_OOP.Player.find_player_with_puuid(utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(param))
-                print(f"Uploaded {player.fullName}")
-            elif utils.FUNCTIONS.isPuuidFormat(param):
-                player = utils.MATCH_OOP.Player.find_player_with_puuid(param)
-                print(f"Uploaded {player.fullName}")
-            else:
-                print(f"{param} is not a valid player name or puuid")
-    
     def location_heatmap(*args):
         if args[0] == "":
             Location_Heatmap.run()
         else:
             for playerName in args[1:]:
                 if utils.FUNCTIONS.isFullName(playerName):
-                    Location_Heatmap.run(args[0], playerName)
+        
+                    imagesList = Location_Heatmap.run(args[0], playerName)
+                    for image in imagesList:
+                        plt.figure(figsize=(10, 10))
+                        plt.imshow(image)
+                        plt.axis('off')
+                        plt.show()
+                    
+                    
                 else:
                     print(f"{playerName} is not a valid player name")
-    
-    def load_comp_history(*args):
-        for param in args:
-            if utils.FUNCTIONS.isPuuidFormat(param):
-                puuid = param
-            else:
-                puuid = utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(param)
-        matchHistory = utils.API_CALLS.getMatchHistory(puuid)
-        for match in matchHistory["history"]:
-            if match["queueId"] == "competitive" or match["queueId"] == "":
-                matchId = match["matchId"]
-                try:
-                    utils.MATCH_OOP.Match.create(matchId)
-                except Exception as e:
-                    print(f"Error loading match {matchId}: {e}")
 
-    
     def exit():
         """End the process but allow the program to keep running for an additional command."""
         utils.FUNCTIONS.end_process()

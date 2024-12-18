@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import utils
 
 
-def run( side: str = None, parameter:str = None) -> None:
+def run( side: str = None, parameter:str = None) -> list:
     if not parameter:
         def ask_name():
             parameter = input("Insert player name: ")
@@ -51,10 +51,11 @@ def run( side: str = None, parameter:str = None) -> None:
     static_maps = utils.ALL_DATA.STATIC_GAME_DATA.getMaps()
     
     def get_mapsLists():
+        result = []
         for map in static_maps:
-            result = []
             map_uuid = map["uuid"]
             dict = {
+                "mapName": map["displayName"],
                 "image_url": map["displayIcon"],
                 "points": [],
                 "x_multiplier": map["xMultiplier"],
@@ -68,12 +69,31 @@ def run( side: str = None, parameter:str = None) -> None:
             if not dict["points"]:
                 continue
             result.append(dict)
-    mapsList = get_mapsLists()
+        return result
     
-
-    for map in mapsList:
-        generate_heatmap(map["image_url"], map["points"], map["x_multiplier"], map["y_multiplier"], map["x_scalar_to_add"], map["y_scalar_to_add"])
+    mapsList = get_mapsLists()
         
+    overlaysList = []
+    for map in mapsList:
+        mapName = map["mapName"]
+        image = generate_heatmap(map["image_url"], map["points"], map["x_multiplier"], map["y_multiplier"], map["x_scalar_to_add"], map["y_scalar_to_add"])
+        overlaysList.append(image)
+        
+        output_dir = 'VALORANT/Location_Heatmap/OUTPUT'
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        # Save the result
+        output_path = os.path.join(output_dir, 'heatmap_' + mapName + '.jpg')  # You can change the filename if needed
+        cv2.imwrite(output_path, image)
+
+    
+    
+        
+
+    
+    return overlaysList
+    
         
 def generate_heatmap(image_url, points, x_multiplier, y_multiplier, x_scalar_to_add, y_scalar_to_add):
     """
@@ -143,9 +163,8 @@ def generate_heatmap(image_url, points, x_multiplier, y_multiplier, x_scalar_to_
     # 7️⃣ Mezclar la imagen original con el mapa de calor coloreado
     overlay = cv2.addWeighted(image, 0.6, heatmap_colored, 0.4, 0)
     
-    # Mostrar la imagen resultante
-    plt.figure(figsize=(10, 10))
-    plt.imshow(overlay)
-    plt.axis('off')
-    plt.show()
+    return overlay
+    
+    
+    
 

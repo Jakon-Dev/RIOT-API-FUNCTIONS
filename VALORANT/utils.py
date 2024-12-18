@@ -1,4 +1,5 @@
 import json
+from httpx import delete
 import requests
 from tqdm import tqdm
 import time
@@ -186,8 +187,6 @@ class ALL_DATA:
             ]
             for future in futures:
                 future.result()
-
-
         
     class DATA_BASE:
         @staticmethod
