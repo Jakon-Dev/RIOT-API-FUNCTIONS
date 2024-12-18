@@ -1,2 +1,5 @@
 SECRET_DATA.py
 **/__pycache__/
+VALORANT/Data_Base/Riot-Matches.csv
+VALORANT/Data_Base/Riot-Users.csv
+MATCHEXAMPLE.json

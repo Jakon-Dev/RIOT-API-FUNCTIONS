@@ -58,27 +58,6 @@ class RIOT_USERS:
             updated_df.to_csv(file_path, index=False)
     
     def search(value: str, search: str = "puuid") -> json:
-        """
-        Searches a CSV file for a specific entry based on the given search parameter.
-
-        Args:
-        - value (str): The value to search for. 
-            - If `search` is "puuid", `value` must match the PUUID format.
-            - If `search` is "fullName", `value` must match the full name format.
-        - search (str): The type of search to perform. Valid options are:
-            - "puuid": Search for a Player UUID.
-            - "fullName": Search for a player's full name.
-            - Default is "puuid".
-
-        Raises:
-            - ValueError: If `search` is not one of the valid options ("puuid", "fullName").
-            - ValueError: If `value` does not match the expected format for the specified `search` parameter.
-
-        Notes:
-        - This function relies on external utility functions:
-            - `utils.FUNCTIONS.isPuuidFormat(value)`: Validates the PUUID format.
-            - `utils.FUNCTIONS.isFullName(value)`: Validates the full name format.
-        """
         
         if search != "puuid" and search != "fullName":
             raise ValueError(f"Not valid search parameter '{search}', only 'puuid' and 'fullName' are valid.")
@@ -99,8 +78,7 @@ class RIOT_USERS:
                     return infoJson
                 if search == "fullName" and fullName == value:
                     return infoJson
-                else:
-                    return None
+            return None
         else:
             return None
                 
@@ -207,6 +185,8 @@ class RIOT_MATCHES:
             
             updated_df = pd.concat([existing_df, new_data], ignore_index=True)
             updated_df.to_csv(file_path, index=False)
+            for index, row in new_data.iterrows():
+                utils.MATCH_OOP.Match.create(row['matchId'])
     
     def search(matchId: str) -> json:        
         if not utils.FUNCTIONS.isUuidFormat(matchId):
@@ -221,8 +201,7 @@ class RIOT_MATCHES:
                 infoJson = json.loads(row['infoJson'])
                 if matchId_from_csv == matchId:
                     return infoJson
-                else:
-                    return None
+            return None
         else:
             return None
     

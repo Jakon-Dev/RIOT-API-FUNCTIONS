@@ -6,6 +6,7 @@ import re
 import os
 import datetime
 import pytz
+from concurrent.futures import ProcessPoolExecutor
 
 
 import SECRET_DATA as SECRETS
@@ -14,8 +15,12 @@ import SECRET_DATA as SECRETS
 from Static_Game_Data import StaticGameData
 from Static_Game_Data import processer as StaticDataProcesser
 from Data_Base import DataBase as DB
-import Match_OOP_Processing.Match
-import Match_OOP_Processing.All
+import Match_OOP_Processing.Match as Match_Class
+import Match_OOP_Processing.Player as Player_Class
+import Match_OOP_Processing.Location as Location_Class
+import Match_OOP_Processing.All as All_Classes
+
+
 
 
 
@@ -141,6 +146,24 @@ class API_CALLS:
         else:
             return None
     
+    def getMatchHistory(puuid: str) -> json:
+        API_KEY = GLOBALS.API.API_KEY
+        REQUEST_URL = GLOBALS.API.RECENT_MATCHES_URL.format(puuid, API_KEY)        
+        response = requests.get(REQUEST_URL)
+        while response.status_code == 429:  # Manejar error de límite de tasa
+            print(f"Error 429, retrying for puuid: {puuid}")
+            FUNCTIONS.wait()
+            response = requests.get(REQUEST_URL)
+        
+        # Guardar los datos en el archivo JSON si la solicitud fue exitosa
+        if response.status_code == 200:
+            match_history = response.json()
+            return match_history
+        else:
+            print(f"Error al obtener datos para el puuid {puuid}: {response.status_code}")
+            return None
+
+    
 class ALL_DATA:
     def update():
         ALL_DATA.STATIC_GAME_DATA.update()
@@ -215,8 +238,15 @@ class ALL_DATA:
             pass
 
 class MATCH_OOP:
-    class Match(Match_OOP_Processing.Match.Match):
+    class Match(Match_Class.Match):
         pass
+    
+    class Player(Player_Class.Player):
+        pass
+    
+    class Location(Location_Class.Location):
+        pass
+    
 
 class DATA_FINDERS:
     class RIOT_USERS:

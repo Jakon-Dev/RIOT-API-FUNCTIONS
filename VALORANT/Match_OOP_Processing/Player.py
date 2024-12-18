@@ -33,4 +33,5 @@ class Player:
             if player.puuid == puuid:
                 return player
         newPlayer = Player(puuid)
+        All_Classes.ALL_PLAYERS.append(newPlayer)
         return newPlayer

@@ -6,6 +6,9 @@ import Match_OOP_Processing.Team as Team_Class
 import Match_OOP_Processing.Round as Round_Class
 import Match_OOP_Processing.Assist as Assist_Class
 import Match_OOP_Processing.Kill as Kill_Class
+import Match_OOP_Processing.Location as Location_Class
+
+
 
 
 
@@ -32,10 +35,8 @@ class Match:
                 self.gameStartMillis = matchInfo["gameStartMillis"]
                 self.gameLengthTime = utils.FUNCTIONS.TIME.millis_to_time(self.gameLengthMillis)
                 self.gameStartDate = utils.FUNCTIONS.TIME.millis_to_date(self.gameStartMillis)
-            timeInfo()
-            
+            timeInfo() 
         matchInfo()
-        
         
         def init_lists():
             self.PLAYERS_PUUIDS = []
@@ -44,18 +45,20 @@ class Match:
             self.TEAMS = []
             self.COACHES = []
             self.ASSISTS = []
-            self.KILLS = [] 
+            self.KILLS = []
+            self.LOCATIONS = []
         init_lists()
         
         
         self.process()
         
-        for key, value in self.__dict__.items():
-            if type(value).__name__ == "dict" or type(value).__name__ == "list":
-                print(f"{key} -> {type(value).__name__}")
-            else:
-                # Prints key and value
-                print(f"{key} = {value}")
+        if False:
+            for key, value in self.__dict__.items():
+                if type(value).__name__ == "dict" or type(value).__name__ == "list":
+                    print(f"{key} -> {type(value).__name__}")
+                else:
+                    # Prints key and value
+                    print(f"{key} = {value}")
 
 
         All_Classes.ALL_MATCHES.append(self)
@@ -75,7 +78,73 @@ class Match:
         process_players()
         
         def process_rounds():
-            pass
+            for rounde in self.API_json["roundResults"]:
+                # self.ROUNDS.append(Round_Class.Round(rounde))
+                def get_teams() -> str:
+                    def_puuids, atk_puuids = [], []
+                    winning_team = rounde["winningTeam"]
+                    winning_team_role = rounde["winningTeamRole"]
+                    red_puuids = []
+                    blue_puuids = []
+                    for player in self.API_json["players"]:
+                        if player["teamId"] == "Red":
+                            red_puuids.append(player["puuid"])
+                        elif player["teamId"] == "Blue":
+                            blue_puuids.append(player["puuid"])
+                    if winning_team == "Red":
+                        if winning_team_role == "Defender":
+                            def_puuids = red_puuids
+                            atk_puuids = blue_puuids
+                        else:
+                            def_puuids = blue_puuids
+                            atk_puuids = red_puuids
+                    elif winning_team == "Blue":
+                        if winning_team_role == "Defender":
+                            def_puuids = blue_puuids
+                            atk_puuids = red_puuids
+                        else:
+                            def_puuids = red_puuids
+                            atk_puuids = blue_puuids
+                    
+                    return def_puuids, atk_puuids
+                def_puuids, atk_puuids = get_teams()               
+                
+                
+                def players_agents():
+                    result = []
+                    for player in self.API_json["players"]:
+                        
+                        result.append([player["puuid"],player["characterId"]])
+                    return result
+                playersAgents = players_agents()
+                
+                def process_locations():
+                    for stat in rounde["playerStats"]:
+                        for kill in stat["kills"]:
+                            for location in kill["playerLocations"]:
+                                side = ""
+                                if location["puuid"] in def_puuids:
+                                    side = "def"
+                                elif location["puuid"] in atk_puuids:
+                                    side = "atk"
+                                def get_agent():
+                                    for playerAgent in playersAgents:
+                                        if playerAgent[0] == location["puuid"]:
+                                            agent = playerAgent[1]
+                                agent = get_agent()
+                                dict = {
+                                    "x": location["location"]["x"],
+                                    "y": location["location"]["y"],
+                                    "mapUuid": self.mapUuid,
+                                    "matchId": self.matchId,
+                                    "playerPuuid": location["puuid"],
+                                    "viewRadians": location["viewRadians"],
+                                    "side": side,
+                                    "playerAgent": agent
+                                }
+                                Location_Class.Location.create(dict)
+                    
+                process_locations()
         process_rounds()
         
         def process_teams():
@@ -93,8 +162,13 @@ class Match:
         def process_kills():
             pass
         process_kills()
+        
+        
 
     
-    def create(matchId: str) -> None:
-        Match(matchId)
+       
+    def create(matchId: str) -> object:
+        assert(utils.FUNCTIONS.isUuidFormat(matchId))
+        match = All_Classes.get_match_by_matchId(matchId)
+        return match
         
