@@ -29,8 +29,8 @@ def get_player_by_puuid(puuid: str) -> object:
 
 def get_location_by_dict(info: dict) -> object:
     for location in ALL_LOCATIONS:
-        if location.x == info["x"] and location.y == info["y"] and location.mapUuid == info["mapUuid"] and location.matchId == info["matchId"] and location.playerPuuid == info["playerPuuid"] and location.viewRadians == info["viewRadians"]:
+        if location.__dict__ == info:
             return location
-    newLocation = utils.MATCH_OOP.Location(info["x"], info["y"], info["mapUuid"], info["matchId"], info["playerPuuid"], info["viewRadians"], info["side"])
+    newLocation = utils.MATCH_OOP.Location(info)
     ALL_LOCATIONS.append(newLocation)
     return newLocation

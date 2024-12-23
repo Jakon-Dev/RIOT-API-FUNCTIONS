@@ -15,83 +15,105 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import utils
 
 
-def run( side: str = None, parameter:str = None) -> list:
-    if not parameter:
-        def ask_name():
-            parameter = input("Insert player name: ")
-            while not utils.FUNCTIONS.isFullName(parameter):
-                print("Name not valid, valid format example is Jakon#Coach")
-                print()
-                parameter = input("Insert valid player name: ")
-            return parameter
-        parameter = ask_name()
+def run(maps: list = None, players: list = None, agents: list = None, matches: list = None, side: str = None, rtime: list = None, rounds: list = None) -> list:
+    '''
+    Parameters:
+        :maps: List of mapNames to include in the heatmap.
+        :players: List of playerNames or puuids to base the heatmaps on.
+        :agents: List of agentNames to include in the heatmap.
+        :matches: List of matchIds to include in the heatmap.
+        :side: Side to include in the heatmap ("atk" or "def").
+        :rtime: List of [StartRoundTime, EndRoundTime]
+        :rounds: List of rounds to include in the heatmap.
+    Returns: 
+        List of heatmaps, one for each map.
+    '''
     
-    if not utils.FUNCTIONS.isPuuidFormat(parameter):
-        parameter = utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(parameter)
+    for player in players:
+        if not utils.FUNCTIONS.isPuuidFormat(player):
+            player = utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(player)
 
-    locations = utils.MATCH_OOP.Location.search_by_player(parameter)
-    
-    if not side:
-        def ask_side():
-            side = input("Insert side: ")
-            sides = ["def", "atk", "both"]
-            while side not in sides:
-                print("Side not valid, valid sides are 'def', 'atk' or 'both'")
-                print()
-                side = input("Insert side: ")
-            return side
-        side = ask_side()
-    
-    if side == "def":
-        locations = [location for location in locations if location.side == "def"]
-    elif side == "atk":
-        locations = [location for location in locations if location.side == "atk"]
-    
-    
-    static_maps = utils.ALL_DATA.STATIC_GAME_DATA.getMaps()
-    
-    def get_mapsLists():
-        result = []
-        for map in static_maps:
-            map_uuid = map["uuid"]
-            dict = {
-                "mapName": map["displayName"],
-                "image_url": map["displayIcon"],
-                "points": [],
-                "x_multiplier": map["xMultiplier"],
-                "y_multiplier": map["yMultiplier"],
-                "x_scalar_to_add": map["xScalarToAdd"],
-                "y_scalar_to_add": map["yScalarToAdd"]
-            }
-            for location in locations:
-                if location.mapUuid == map_uuid:
-                    dict["points"].append({"x": location.x, "y": location.y})
-            if not dict["points"]:
-                continue
-            result.append(dict)
-        return result
-    
-    mapsList = get_mapsLists()
+        def ensure(player, matches):
+            utils.MATCH_OOP.Player.find_player_with_puuid(player)
+            if matches:
+                for match in matches:
+                    utils.MATCH_OOP.Match.create(match)
+        ensure(player, matches)
         
-    overlaysList = []
-    for map in mapsList:
-        mapName = map["mapName"]
-        image = generate_heatmap(map["image_url"], map["points"], map["x_multiplier"], map["y_multiplier"], map["x_scalar_to_add"], map["y_scalar_to_add"])
-        overlaysList.append(image)
+        def get_locations():
+            locations = utils.MATCH_OOP.Location.search_by_player(player)
+            if maps:
+                locations = [location for location in locations if utils.ALL_DATA.STATIC_GAME_DATA.MAPS.GET_BY_UUID.name(location.mapUuid) in maps]
+            if agents:
+                print(f"Locations found: {len(locations)}")
+                for location in locations:
+                    print(location.agent)
+                    location.agent = utils.ALL_DATA.STATIC_GAME_DATA.AGENTS.GET_BY_UUID.name(location.agent)
+                print(f"Locations found: {len(locations)}")
+            if matches:
+                locations = [location for location in locations if location.matchId in matches]
+            if rtime:
+                locations = [location for location in locations if rtime[0] <= location.roundTime <= rtime[1]]
+            if rounds:
+                locations = [location for location in locations if location.roundNumber in rounds]
+            if side:
+                if side == "both":
+                    return locations
+                locations = [location for location in locations if location.side == side]
+            return locations
+        locations = get_locations()
+
+        static_maps = utils.ALL_DATA.STATIC_GAME_DATA.getMaps()
+        def used_static_maps():
+            new_static_maps = []
+            for map in static_maps:
+                for myMaps in maps:
+                    if map["displayName"] == myMaps:
+                        new_static_maps.append(map)
+            return new_static_maps
+        if maps:
+            static_maps = used_static_maps()
+
+
         
-        output_dir = 'VALORANT/Location_Heatmap/OUTPUT'
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-        # Save the result
-        output_path = os.path.join(output_dir, 'heatmap_' + mapName + '.jpg')  # You can change the filename if needed
-        cv2.imwrite(output_path, image)
-
-    
-    
+        def get_mapsLists():
+            result = []
+            for map in static_maps:
+                map_uuid = map["uuid"]
+                dict = {
+                    "mapName": map["displayName"],
+                    "image_url": map["displayIcon"],
+                    "points": [],
+                    "x_multiplier": map["xMultiplier"],
+                    "y_multiplier": map["yMultiplier"],
+                    "x_scalar_to_add": map["xScalarToAdd"],
+                    "y_scalar_to_add": map["yScalarToAdd"]
+                }
+                for location in locations:
+                    if location.mapUuid == map_uuid:
+                        dict["points"].append({"x": location.x, "y": location.y})
+                if not dict["points"]:
+                    continue
+                result.append(dict)
+            return result
+        mapsList = get_mapsLists()
         
+        
+        overlaysList = []
+        for map in mapsList:
+            mapName = map["mapName"]
+            
+            image = generate_heatmap(map["image_url"], map["points"], map["x_multiplier"], map["y_multiplier"], map["x_scalar_to_add"], map["y_scalar_to_add"])
+            overlaysList.append(image)
+            
+            output_dir = 'VALORANT/Location_Heatmap/OUTPUT'
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
 
-    
+            # Save the result
+            output_path = os.path.join(output_dir, 'heatmap_' + mapName + '.jpg')  # You can change the filename if needed
+            cv2.imwrite(output_path, image)
+
     return overlaysList
     
         

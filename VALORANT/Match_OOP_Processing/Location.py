@@ -6,17 +6,10 @@ import uuid
 
 
 class Location:
-    def __init__(self, x: int, y: int, mapUuid: str, matchId: str, playerPuuid: str, viewRadians: float, side: str) -> None:
-        assert(utils.FUNCTIONS.isUuidFormat(mapUuid))
-        assert(utils.FUNCTIONS.isPuuidFormat(playerPuuid))
-        self.locationId = uuid.uuid4()
-        self.viewRadians = viewRadians
-        self.matchId = matchId
-        self.x = x
-        self.y = y
-        self.mapUuid = mapUuid
-        self.playerPuuid = playerPuuid
-        self.side = side
+    def __init__(self, info: dict) -> None:
+        assert(utils.FUNCTIONS.isUuidFormat(info["mapUuid"]))
+        assert(utils.FUNCTIONS.isPuuidFormat(info["playerPuuid"]))
+        self.__dict__ = info
     
 
     def create(info: dict) -> object:

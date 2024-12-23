@@ -121,6 +121,34 @@ class Match:
                 def process_locations():
                     for stat in rounde["playerStats"]:
                         for kill in stat["kills"]:
+                            def victim_location():
+                                victim_side = ""
+                                if kill["victim"] in def_puuids:
+                                    victim_side = "def"
+                                elif kill["victim"] in atk_puuids:
+                                    victim_side = "atk"
+                                def get_agent():
+                                    agent = ""
+                                    for playerAgent in playersAgents:
+                                        if playerAgent[0] == kill["victim"]:
+                                            agent = playerAgent[1]
+                                    return utils.ALL_DATA.STATIC_GAME_DATA.AGENTS.GET_BY_UUID.name(agent)
+                                agent = get_agent()
+                                victim_location = {
+                                    "x": kill["victimLocation"]["x"],
+                                    "y": kill["victimLocation"]["y"],
+                                    "mapUuid": self.mapUuid,
+                                    "matchId": self.matchId,
+                                    "playerPuuid": kill["victim"],
+                                    "side": victim_side,
+                                    "agent": agent,
+                                    "roundTime": kill["timeSinceRoundStartMillis"],
+                                    "viewRadians": 0,
+                                    "roundNumber": rounde["roundNum"]
+                                }
+                                Location_Class.Location.create(victim_location)
+                            victim_location()
+                            
                             for location in kill["playerLocations"]:
                                 side = ""
                                 if location["puuid"] in def_puuids:
@@ -128,9 +156,11 @@ class Match:
                                 elif location["puuid"] in atk_puuids:
                                     side = "atk"
                                 def get_agent():
+                                    agent = ""
                                     for playerAgent in playersAgents:
                                         if playerAgent[0] == location["puuid"]:
                                             agent = playerAgent[1]
+                                    return utils.ALL_DATA.STATIC_GAME_DATA.AGENTS.GET_BY_UUID.name(agent)
                                 agent = get_agent()
                                 dict = {
                                     "x": location["location"]["x"],
@@ -140,7 +170,9 @@ class Match:
                                     "playerPuuid": location["puuid"],
                                     "viewRadians": location["viewRadians"],
                                     "side": side,
-                                    "playerAgent": agent
+                                    "agent": agent,
+                                    "roundTime": kill["timeSinceRoundStartMillis"],
+                                    "roundNumber": rounde["roundNum"]
                                 }
                                 Location_Class.Location.create(dict)
                     

@@ -7,20 +7,12 @@ import Match_OOP_Processing.All as All_Classes
 import matplotlib.pyplot as plt
 from IPython.display import display
 import ipywidgets as widgets
+import os
 
 
 
 
 
-def handle_sigint(signal_num, frame):
-    """Handles Ctrl+C signal to execute FUNTIONS.exit() instead of immediate termination."""
-    FUNTIONS.exit()
-
-# Attach the signal handler for Ctrl+C
-signal.signal(signal.SIGINT, handle_sigint)
-
-
-utils.FUNCTIONS.start_process()
 
 class FUNTIONS:
     
@@ -69,31 +61,162 @@ class FUNTIONS:
             print(f"Invalid load type '{args[0]}'")
 
     def location_heatmap(*args):
+        SUB_COMMANDS = {
+            "-map": {
+                "definition": "Makes only heatmaps for maps selected.",
+                "params": "[mapName] [mapName] [mapName] ..."
+            },
+            "-players": {
+                "definition": "Makes heatmaps for that players.",
+                "params": "[playerName/puuid] [playerName/puuid] ..."
+            },
+            "-agent": {
+                "definition": "Makes only heatmaps for agents selected.",
+                "params": "[agentName] [agentName] [agentName] ..."
+            },
+            "-matches": {
+                "definition": "Makes heatmaps for matches selected, else it makes heatmaps for all matches.",
+                "params": "[matchId] [matchId] [matchId] ..."
+            },
+            "-rtime": {
+                "definition": "Only takes locations displayed during that interval of milliseconds.",
+                "params": "[StartMillis] [EndMillis]"
+            },
+            "-side": {
+                "definition": "Makes only heatmaps for the side chosen",
+                "params": "[atk/def]"
+            },
+            "-round":{
+                "definition": "Only takes locations from rounds selected",
+                "params": "[roundNumber] [roundNumber] ..."
+            }
+        }
         if args[0] == "":
             Location_Heatmap.run()
+        elif args[0] == "help":
+            print("Heatmap options are:")
+            print("\n".join([f"    {subCommand}: {details['definition']}" for subCommand, details in SUB_COMMANDS.items()]))
         else:
-            for playerName in args[1:]:
-                if utils.FUNCTIONS.isFullName(playerName):
-        
-                    imagesList = Location_Heatmap.run(args[0], playerName)
-                    for image in imagesList:
-                        plt.figure(figsize=(10, 10))
-                        plt.imshow(image)
-                        plt.axis('off')
-                        plt.show()
+            def get_commands(args):
+                result = []
+                                
+                while args:
+                    command = args[0]
+                    args = args[1:]
+                    if not args:
+                        print(f"Wrong parameter for command {command}")
+                    elif command[0] != "-" or command not in SUB_COMMANDS:
+                        print(f"Wrong parameter for command {command}")
+                        for subCommand in SUB_COMMANDS:
+                            print(f"    {subCommand}: {SUB_COMMANDS[subCommand]['definition']}")
+                    else:
+                        command_params = []
+                        while args and args[0][0] != "-":  # Ensure args is not empty before checking args[0][0]
+                            command_params.append(args[0])
+                            args = args[1:]
+                        command_dict = {
+                            "command": command,
+                            "params": command_params
+                        }
+                        result.append(command_dict)  # Add the parsed command to the result
+                print(result)
+                return result
+            commands = get_commands(args)
+            def valid_commands(commands) -> bool:
+                result = True
+                if not any(cmd["command"] == "-players" for cmd in commands):
+                    print("'-players' command is mandatory")
+                    result = False
+                for command in commands:
+                    cmd = command["command"]
+                    params = command["params"]
+                    if cmd == "-map":
+                        for mapName in params:
+                            if mapName not in [map["displayName"] for map in utils.ALL_DATA.STATIC_GAME_DATA.getMaps()]:
+                                print(f"Map '{mapName}' not found. Insert a valid map name.")
+                                result = False
+                    elif cmd == "-players":
+                        for player in params:
+                            if not utils.FUNCTIONS.isFullName(player) and not utils.FUNCTIONS.isPuuidFormat(player):
+                                print(f"Player '{player}' is not a valid name or puuid.")
+                                result = False
+                    elif cmd == "-agent":
+                        for agent in params:
+                            if agent not in [agent["displayName"] for agent in utils.ALL_DATA.STATIC_GAME_DATA.getAgents()]:
+                                print(f"Agent '{agent}' not found.")
+                                result = False
+                    elif cmd == "-matches":
+                        for matchId in params:
+                            if not utils.FUNCTIONS.isUuidFormat(matchId):
+                                print(f"MatchId '{matchId}' is not a valid UUID.")
+                                result = False
+                    elif cmd == "-rtime":
+                        if len(params) != 2:
+                            print("Wrong parameters for -rtime, it needs 2 parameters")
+                            result = False
+                        else:
+                            try:
+                                int(params[0])
+                                int(params[1])
+                            except:
+                                print("Wrong parameters for -rtime, it needs 2 integers")
+                                result = False
+                    elif cmd == "-side":
+                        if params[0] not in ["atk", "def", "both"]:
+                            print("Wrong parameters for -side, it needs 'atk', 'def' or 'both'")
+                            result = False
+                return result
+            if valid_commands(commands):
+                def execute_commands(commands) -> list:
+                    maps = None
+                    players = None
+                    agents = None
+                    matches = None
+                    side = None
+                    rtime = None
+                    rounds = None
                     
+                    for command in commands:
+                        cmd = command["command"]
+                        params = command["params"]
+                        if cmd == "-map":
+                            maps = params
+                        elif cmd == "-players":
+                            players = params
+                        elif cmd == "-agent":
+                            agents = params
+                        elif cmd == "-matches":
+                            matches = params
+                        elif cmd == "-rtime":
+                            rtime = params
+                        elif cmd == "-side":
+                            side = params[0]
+                        elif cmd == "-round":
+                            rounds = params
                     
-                else:
-                    print(f"{playerName} is not a valid player name")
+                    imagesList = Location_Heatmap.run(maps, players, agents, matches, side, rtime, rounds)
+                    return imagesList
+                imagesList = execute_commands(commands)
+                
+                for image in imagesList:
+                    plt.figure(figsize=(10, 10))
+                    plt.imshow(image)
+                    plt.axis('off')
+                    plt.show()
+            else:
+                print("Invalid parameters. Please check your input. Or write 'heatmap help'")
 
-    def exit():
-        """End the process but allow the program to keep running for an additional command."""
-        utils.FUNCTIONS.end_process()
-        print("You have exited the current process. Type 'exit' to fully exit the program.")
 
-    def full_exit():
+    def exit(*args):
         """Fully exits the program."""
-        utils.FUNCTIONS.end_process()
+        if not args:
+            sys.exit()
+        if args[0] == "del" and args[1] == "upt":
+            utils.FUNCTIONS.end_process()
+        elif args[0] == "del":
+            utils.ALL_DATA.DATA_BASE.delete()
+        elif args[0] == "upt":
+            utils.ALL_DATA.DATA_BASE.update()
         sys.exit()
 
     def help(*args):
@@ -121,8 +244,10 @@ COMMANDS = {
     },
     "exit": {
         "definition": "Exits the program",
-        "function": lambda: FUNTIONS.full_exit(),
-        "params": ""
+        "function": lambda params: FUNTIONS.exit(*params.split(" ")),
+        "params": '''
+            del: Deletes all data stored in csv files.
+        '''
     },
     "load": {
         "definition": "Loads the type of data you want to input to the DataBase",
@@ -146,6 +271,14 @@ COMMANDS = {
 }
 
 def run():
+    def start_process():
+        # If files "Riot-Matches.csv" and "Riot-Users.csv" are not created, it executes start_process from utils.
+        if not os.path.exists("VALORANT/Data_Base/Riot-Matches.csv") or not os.path.exists("VALORANT/Data_Base/Riot-Users.csv"):
+            utils.FUNCTIONS.start_process()
+        else:
+            print("Files already exist. Skipping data update.")
+    start_process()
+
     while True:
         command_line = input("command_line: ")
 
