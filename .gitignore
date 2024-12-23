@@ -4,3 +4,5 @@ VALORANT/Data_Base/Riot-Matches.csv
 VALORANT/Data_Base/Riot-Users.csv
 MATCHEXAMPLE.json
 VALORANT/Location_Heatmap/OUTPUT
+VALORANT/VOD_Scanner/TAB_Reader/INPUT
+VALORANT/VOD_Scanner/TAB_Reader/OUTPUT
