@@ -11,12 +11,13 @@ ALL_LOCATIONS = []
 
 
 
-def get_match_by_matchId(matchId: str) -> object:
+def get_match_by_matchId(matchId: str, append: bool = True) -> object:
     for match in ALL_MATCHES:
         if match.matchId == matchId:
             return match
     newMatch = utils.MATCH_OOP.Match(matchId)
-    ALL_MATCHES.append(newMatch)
+    if append:
+        ALL_MATCHES.append(newMatch)
     return newMatch
 
 def get_player_by_puuid(puuid: str) -> object:

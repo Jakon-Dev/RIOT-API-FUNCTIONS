@@ -45,11 +45,11 @@ def run(maps: list = None, players: list = None, agents: list = None, matches: l
             if maps:
                 locations = [location for location in locations if utils.ALL_DATA.STATIC_GAME_DATA.MAPS.GET_BY_UUID.name(location.mapUuid) in maps]
             if agents:
-                print(f"Locations found: {len(locations)}")
+                locations_ = []
                 for location in locations:
-                    print(location.agent)
-                    location.agent = utils.ALL_DATA.STATIC_GAME_DATA.AGENTS.GET_BY_UUID.name(location.agent)
-                print(f"Locations found: {len(locations)}")
+                    if location.agent in agents:
+                        locations_.append(location)
+                locations = locations_
             if matches:
                 locations = [location for location in locations if location.matchId in matches]
             if rtime:

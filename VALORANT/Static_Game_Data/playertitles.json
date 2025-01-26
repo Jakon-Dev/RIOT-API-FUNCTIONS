@@ -98,6 +98,20 @@
         "assetPath": "ShooterGame/Content/Personalization/Titles/2024_ValentinesDay/PlayerTitle_EmojiHeart_PrimaryAsset"
     },
     {
+        "uuid": "899e7754-4c86-8c16-a94e-f2bb6c0d808f",
+        "displayName": "Cooked Title",
+        "titleText": "Cooked",
+        "isHiddenIfNotOwned": true,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/2025LNY_EventPass/PlayerTitle_Cooked_PrimaryAsset"
+    },
+    {
+        "uuid": "25b17fb8-4818-08ab-e5da-a384dd6d4d8f",
+        "displayName": "Serpent Title",
+        "titleText": "Serpent",
+        "isHiddenIfNotOwned": true,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/2025LNY_EventPass/PlayerTitle_Serpent_PrimaryAsset"
+    },
+    {
         "uuid": "a65074fd-4937-734e-20fe-3cafa842c631",
         "displayName": "Catalyst Title",
         "titleText": "Catalyst",
@@ -180,6 +194,20 @@
         "titleText": "St\u00e5ljeger",
         "isHiddenIfNotOwned": false,
         "assetPath": "ShooterGame/Content/Personalization/Titles/Cable/PlayerTitle_CableTitle2_PrimaryAsset"
+    },
+    {
+        "uuid": "999a4178-450b-2584-f6ec-cfa0f6d620d6",
+        "displayName": "On Target Title",
+        "titleText": "On Target",
+        "isHiddenIfNotOwned": false,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/Cashew/PlayerTitle_CashewTitle1_PrimaryAsset"
+    },
+    {
+        "uuid": "d07b7d04-4ffa-8909-51e8-f3b30675235e",
+        "displayName": "Hermano Title",
+        "titleText": "Hermano",
+        "isHiddenIfNotOwned": false,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/Cashew/PlayerTitle_CashewTitle2_PrimaryAsset"
     },
     {
         "uuid": "e8c04a61-49a8-8d0a-501c-13b26f20110a",
@@ -1692,6 +1720,27 @@
         "titleText": "In Control",
         "isHiddenIfNotOwned": true,
         "assetPath": "ShooterGame/Content/Personalization/Titles/SupernovaEvent/PlayerTitle_InControl_PrimaryAsset"
+    },
+    {
+        "uuid": "f3009eb7-4416-39e0-4b66-edb914c7f950",
+        "displayName": "NPC Title",
+        "titleText": "NPC",
+        "isHiddenIfNotOwned": false,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/V25_Act1_BP/PlayerTitle_NPC_PrimaryAsset"
+    },
+    {
+        "uuid": "d4fb406f-42ce-dda3-c244-5da4a83d5e5f",
+        "displayName": "New Year, New Me Title",
+        "titleText": "New Year, New Me",
+        "isHiddenIfNotOwned": false,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/V25_Act1_BP/PlayerTitle_NewYearNewMe_PrimaryAsset"
+    },
+    {
+        "uuid": "6b4e1d0c-410e-878b-f151-9b8a8abc83a3",
+        "displayName": "Pookie Title",
+        "titleText": "Pookie",
+        "isHiddenIfNotOwned": false,
+        "assetPath": "ShooterGame/Content/Personalization/Titles/V25_Act1_BP/PlayerTitle_Pookie_PrimaryAsset"
     },
     {
         "uuid": "c402b173-403b-b3f6-f1a6-2a819a687397",

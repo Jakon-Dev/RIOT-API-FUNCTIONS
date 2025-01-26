@@ -13,7 +13,6 @@ import os
 
 
 
-
 class FUNTIONS:
     
     def load(*args):
@@ -119,7 +118,6 @@ class FUNTIONS:
                             "params": command_params
                         }
                         result.append(command_dict)  # Add the parsed command to the result
-                print(result)
                 return result
             commands = get_commands(args)
             def valid_commands(commands) -> bool:
@@ -206,16 +204,15 @@ class FUNTIONS:
             else:
                 print("Invalid parameters. Please check your input. Or write 'heatmap help'")
 
-
     def exit(*args):
         """Fully exits the program."""
         if not args:
             sys.exit()
-        if args[0] == "del" and args[1] == "upt":
+        if "del" in args and "upt" in args:
             utils.FUNCTIONS.end_process()
-        elif args[0] == "del":
+        elif "del" in args:
             utils.ALL_DATA.DATA_BASE.delete()
-        elif args[0] == "upt":
+        elif "upt" in args:
             utils.ALL_DATA.DATA_BASE.update()
         sys.exit()
 
@@ -235,6 +232,15 @@ class FUNTIONS:
         except Exception as e:
             print(f"Error executing code: {e}")
 
+    def loadouts(*args):
+        matchId = input("    MatchId:")
+        round = input("    Round:")
+        player = input("    Player:")
+
+        
+ 
+        
+        
 
 COMMANDS = {
     "help": {
@@ -248,6 +254,11 @@ COMMANDS = {
         "params": '''
             del: Deletes all data stored in csv files.
         '''
+    },
+    "clear":{
+        "definition": "Clears the console",
+        "function": lambda: os.system('cls' if os.name == 'nt' else 'clear'),
+        "params": ""
     },
     "load": {
         "definition": "Loads the type of data you want to input to the DataBase",
@@ -267,6 +278,13 @@ COMMANDS = {
         "definition": "Executes raw Python code.",
         "function": lambda params: FUNTIONS.python(*params.split(" ")),
         "params": "Python code to execute"
+    },
+    "loadouts": {
+        "definition": "Gives loadout information",
+        "function": lambda params: FUNTIONS.loadouts(*params.split(" ")),
+        "params": '''
+            matchId
+        '''
     }
 }
 
@@ -276,11 +294,11 @@ def run():
         if not os.path.exists("VALORANT/Data_Base/Riot-Matches.csv") or not os.path.exists("VALORANT/Data_Base/Riot-Users.csv"):
             utils.FUNCTIONS.start_process()
         else:
-            print("Files already exist. Skipping data update.")
+            utils.FUNCTIONS.start_process(1)
     start_process()
 
     while True:
-        command_line = input("command_line: ")
+        command_line = input("command$ ")
 
         def run_command(command_line: str) -> None:
             parts = command_line.split(" ", 1)  # Split the command and its parameters

@@ -273,6 +273,8 @@ class MATCH_OOP:
     class Location(Location_Class.Location):
         pass
     
+    
+    
 
 class DATA_FINDERS:
     class RIOT_USERS:
@@ -330,12 +332,13 @@ class FUNCTIONS:
             for _ in progress_bar:
                 time.sleep(1)
     
-    def start_process() -> None:
+    def start_process(upt: int = None) -> None:
         '''
         Updates all data and prints the Process start message:
         "Starting process -> Made By Jakon" in ASCII
         
         '''
+        
         os.system('cls' if os.name == 'nt' else 'clear')
         if SETTINGS.PRINTABLES:
             print()
@@ -358,8 +361,10 @@ class FUNCTIONS:
             print(R"######################################################################################################################################################################")
             print()
             print()
-                
-        ALL_DATA.update()
+        if not upt:
+            ALL_DATA.update()
+        else:
+            ALL_DATA.DATA_BASE.RIOT_MATCHES.create_classes()
 
     def end_process() -> None:
         ALL_DATA.DATA_BASE.upload()

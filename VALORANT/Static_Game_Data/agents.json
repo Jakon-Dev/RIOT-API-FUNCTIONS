@@ -4,6 +4,7 @@
         "displayName": "Gekko",
         "description": "Gekko the Angeleno leads a tight-knit crew of calamitous creatures. His buddies bound forward, scattering enemies out of the way, with Gekko chasing them down to regroup and go again.",
         "developerName": "Aggrobot",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/e370fa57-4757-3604-3648-499e1f642d3f/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/e370fa57-4757-3604-3648-499e1f642d3f/displayiconsmall.png",
@@ -64,6 +65,7 @@
         "displayName": "Fade",
         "description": "Turkish bounty hunter Fade unleashes the power of raw nightmare to seize enemy secrets. Attuned with terror itself, she hunts down targets and reveals their deepest fears - before crushing them in the dark.",
         "developerName": "BountyHunter",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/dade69b4-4f5a-8528-247b-219e5a1facd6/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/dade69b4-4f5a-8528-247b-219e5a1facd6/displayiconsmall.png",
@@ -124,6 +126,7 @@
         "displayName": "Breach",
         "description": "The bionic Swede Breach fires powerful, targeted kinetic blasts to aggressively clear a path through enemy ground. The damage and disruption he inflicts ensures no fight is ever fair.",
         "developerName": "Breach",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/5f8d3a7f-467b-97f3-062c-13acf203c006/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/5f8d3a7f-467b-97f3-062c-13acf203c006/displayiconsmall.png",
@@ -184,6 +187,7 @@
         "displayName": "Deadlock",
         "description": "Norwegian operative Deadlock deploys an array of cutting-edge nanowire to secure the battlefield from even the most lethal assault. No one escapes her vigilant watch, nor survives her unyielding ferocity.",
         "developerName": "Cable",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/cc8b64c8-4b25-4ff9-6e7f-37b4da43d235/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/cc8b64c8-4b25-4ff9-6e7f-37b4da43d235/displayiconsmall.png",
@@ -248,10 +252,80 @@
         "voiceLine": null
     },
     {
+        "uuid": "b444168c-4e35-8076-db47-ef9bf368f384",
+        "displayName": "Tejo",
+        "description": "A veteran intelligence consultant from Colombia, Tejo\u2019s ballistic guidance system pressures the enemy to relinquish their ground - or their lives. His targeted strikes keep opponents off balance and under his heel.",
+        "developerName": "Cashew",
+        "releaseDate": "2025-01-08T22:00:00Z",
+        "characterTags": null,
+        "displayIcon": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/displayicon.png",
+        "displayIconSmall": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/displayiconsmall.png",
+        "bustPortrait": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/fullportrait.png",
+        "fullPortrait": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/fullportrait.png",
+        "fullPortraitV2": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/fullportrait.png",
+        "killfeedPortrait": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/killfeedportrait.png",
+        "background": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/background.png",
+        "backgroundGradientColors": [
+            "ffb573ff",
+            "c4611fff",
+            "60291eff",
+            "462821ff"
+        ],
+        "assetPath": "ShooterGame/Content/Characters/Cashew/Cashew_PrimaryAsset",
+        "isFullPortraitRightFacing": false,
+        "isPlayableCharacter": true,
+        "isAvailableForTest": false,
+        "isBaseContent": false,
+        "role": {
+            "uuid": "1b47567f-8f7b-444b-aae3-b0c634622d10",
+            "displayName": "Initiator",
+            "description": "Initiators challenge angles by setting up their team to enter contested ground and push defenders away.",
+            "displayIcon": "https://media.valorant-api.com/agents/roles/1b47567f-8f7b-444b-aae3-b0c634622d10/displayicon.png",
+            "assetPath": "ShooterGame/Content/Characters/_Core/Roles/Breaker_PrimaryDataAsset"
+        },
+        "recruitmentData": {
+            "counterId": "b444168c-4e35-8076-db47-ef9bf368f384",
+            "milestoneId": "8a4cead3-4885-ee5b-5cce-808c0f12937f",
+            "milestoneThreshold": 200000,
+            "useLevelVpCostOverride": false,
+            "levelVpCostOverride": 0,
+            "startDate": "2025-01-08T22:00:00Z",
+            "endDate": "2025-02-05T22:00:00Z"
+        },
+        "abilities": [
+            {
+                "slot": "Ability2",
+                "displayName": "Guided Salvo",
+                "description": "EQUIP an AR targeting system. FIRE to select up to two target locations on the map. ALT FIRE to launch missiles that autonomously navigate to target locations, detonating on arrival.",
+                "displayIcon": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/abilities/ability2/displayicon.png"
+            },
+            {
+                "slot": "Ability1",
+                "displayName": "Special Delivery",
+                "description": "EQUIP a sticky grenade. FIRE to launch. The grenade sticks to the first surface it hits and explodes, Concussing any targets caught in the blast. ALT FIRE to launch the grenade with a single bounce instead.",
+                "displayIcon": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/abilities/ability1/displayicon.png"
+            },
+            {
+                "slot": "Ultimate",
+                "displayName": "Armageddon",
+                "description": "EQUIP a tactical strike targeting map. FIRE to select the origin point of the strike. FIRE again to set the end point and launch the attack, unleashing a wave of explosions along the strike path. ALT FIRE during map targeting to cancel the origin point.",
+                "displayIcon": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/abilities/ultimate/displayicon.png"
+            },
+            {
+                "slot": "Grenade",
+                "displayName": "Stealth Drone",
+                "description": "EQUIP a stealth drone. FIRE to throw the drone forward, assuming direct control of its movement. FIRE again to trigger a pulse that Suppresses and Reveals enemies hit.",
+                "displayIcon": "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/abilities/grenade/displayicon.png"
+            }
+        ],
+        "voiceLine": null
+    },
+    {
         "uuid": "f94c3b30-42be-e959-889c-5aa313dba261",
         "displayName": "Raze",
         "description": "Raze explodes out of Brazil with her big personality and big guns. With her blunt-force-trauma playstyle, she excels at flushing entrenched enemies and clearing tight spaces with a generous dose of \"boom.\"",
         "developerName": "Clay",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Area Damage Specialist"
         ],
@@ -314,6 +388,7 @@
         "displayName": "Chamber",
         "description": "Well-dressed and well-armed, French weapons designer Chamber expels aggressors with deadly precision. He leverages his custom arsenal to hold the line and pick off enemies from afar, with a contingency built for every plan.",
         "developerName": "Deadeye",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/22697a3d-45bf-8dd7-4fec-84a9e28c69d7/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/22697a3d-45bf-8dd7-4fec-84a9e28c69d7/displayiconsmall.png",
@@ -374,6 +449,7 @@
         "displayName": "KAY/O",
         "description": "KAY/O is a machine of war built for a single purpose: neutralizing radiants. His power to Suppress enemy abilities dismantles his opponents' capacity to fight back, securing him and his allies the ultimate edge.",
         "developerName": "Grenadier",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/601dbbe7-43ce-be57-2a40-4abd24953621/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/601dbbe7-43ce-be57-2a40-4abd24953621/displayiconsmall.png",
@@ -434,6 +510,7 @@
         "displayName": "Skye",
         "description": "Hailing from Australia, Skye and her band of beasts trailblaze the way through hostile territory. With her creations hampering the enemy, and her power to heal others, the team is strongest and safest by Skye's side.",
         "developerName": "Guide",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/6f2a04ca-43e0-be17-7f36-b3908627744d/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/6f2a04ca-43e0-be17-7f36-b3908627744d/displayiconsmall.png",
@@ -494,6 +571,7 @@
         "displayName": "Cypher",
         "description": "The Moroccan information broker, Cypher is a one-man surveillance network who keeps tabs on the enemy's every move. No secret is safe. No maneuver goes unseen. Cypher is always watching.",
         "developerName": "Gumshoe",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Detection",
             "Defensive Lockdown"
@@ -557,6 +635,7 @@
         "displayName": "Sova",
         "description": "Born from the eternal winter of Russia's tundra, Sova tracks, finds, and eliminates enemies with ruthless efficiency and precision. His custom bow and incredible scouting abilities ensure that even if you run, you cannot hide. ",
         "developerName": "Hunter_NPE",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Detection",
             "Area Damage"
@@ -620,6 +699,7 @@
         "displayName": "Sova",
         "description": "Born from the eternal winter of Russia's tundra, Sova tracks, finds, and eliminates enemies with ruthless efficiency and precision. His custom bow and incredible scouting abilities ensure that even if you run, you cannot hide. ",
         "developerName": "Hunter",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Detection",
             "Area Damage"
@@ -689,6 +769,7 @@
         "displayName": "Killjoy",
         "description": "The genius of Germany, Killjoy effortlessly secures key battlefield positions with her arsenal of inventions. If their damage doesn't take her enemies out, the debuff her robots provide will make short work of them.",
         "developerName": "Killjoy",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Defensive Lockdown",
             "Area Damage"
@@ -752,6 +833,7 @@
         "displayName": "Harbor",
         "description": "Hailing from India\u2019s coast, Harbor storms the field wielding ancient technology with dominion over water. He unleashes frothing rapids and crushing waves to shield his allies, or pummel those that oppose him.",
         "developerName": "Mage",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/95b78ed7-4637-86d9-7e41-71ba8c293152/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/95b78ed7-4637-86d9-7e41-71ba8c293152/displayiconsmall.png",
@@ -812,6 +894,7 @@
         "displayName": "Vyse",
         "description": "Metallic mastermind Vyse unleashes liquid metal to isolate, trap, and disarm her enemies. Through cunning and manipulation, she forces all who oppose her to fear the battlefield itself.",
         "developerName": "Nox",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/efba5359-4016-a1e5-7626-b1ae76895940/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/efba5359-4016-a1e5-7626-b1ae76895940/displayiconsmall.png",
@@ -880,6 +963,7 @@
         "displayName": "Viper",
         "description": "The American Chemist, Viper deploys an array of poisonous chemical devices to control the battlefield and choke the enemy's vision. If the toxins don't kill her prey, her mindgames surely will.",
         "developerName": "Pandemic",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Vision Control Specialist"
         ],
@@ -948,6 +1032,7 @@
         "displayName": "Phoenix",
         "description": "Hailing from the U.K., Phoenix's star power shines through in his fighting style, igniting the battlefield with flash and flare. Whether he's got backup or not, he's rushing in to fight on his own terms.",
         "developerName": "Phoenix",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Flexibility",
             "Self-Sustain"
@@ -1017,6 +1102,7 @@
         "displayName": "Astra",
         "description": "Ghanaian Agent Astra harnesses the energies of the cosmos to reshape battlefields to her whim. With full command of her astral form and a talent for deep strategic foresight, she's always eons ahead of her enemy's next move.",
         "developerName": "Rift",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/41fb69c1-4189-7b37-f117-bcaf1e96f1bf/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/41fb69c1-4189-7b37-f117-bcaf1e96f1bf/displayiconsmall.png",
@@ -1083,6 +1169,7 @@
         "displayName": "Brimstone",
         "description": "Joining from the U.S.A., Brimstone's orbital arsenal ensures his squad always has the advantage. His ability to deliver utility precisely and safely make him the unmatched boots-on-the-ground commander.",
         "developerName": "Sarge",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Vision Control",
             "Area Damage"
@@ -1146,6 +1233,7 @@
         "displayName": "Iso",
         "description": "Chinese fixer for hire Iso falls into a flow state to dismantle the opposition. Reconfiguring ambient energy into bulletproof protection, he advances with focus towards his next duel to the death.",
         "developerName": "Sequoia",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/0e38b510-41a8-5780-5e8f-568b2a4f2d6c/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/0e38b510-41a8-5780-5e8f-568b2a4f2d6c/displayiconsmall.png",
@@ -1214,6 +1302,7 @@
         "displayName": "Clove",
         "description": "Scottish troublemaker Clove makes mischief for enemies in both the heat of combat and the cold of death. The young immortal keeps foes guessing, even from beyond the grave, their return to the living only ever a moment away.",
         "developerName": "Smonk",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/1dbf2edd-4729-0984-3115-daa5eed44993/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/1dbf2edd-4729-0984-3115-daa5eed44993/displayiconsmall.png",
@@ -1282,6 +1371,7 @@
         "displayName": "Neon",
         "description": "Filipino Agent Neon surges forward at shocking speeds, discharging bursts of bioelectric radiance as fast as her body generates it. She races ahead to catch enemies off guard then strikes them down quicker than lightning.",
         "developerName": "Sprinter",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/bb2a4828-46eb-8cd1-e765-15848195d751/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/bb2a4828-46eb-8cd1-e765-15848195d751/displayiconsmall.png",
@@ -1342,6 +1432,7 @@
         "displayName": "Yoru",
         "description": "Japanese native Yoru rips holes straight through reality to infiltrate enemy lines unseen. Using deception and aggression in equal measure, he gets the drop on each target before they know where to look.",
         "developerName": "Stealth",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": null,
         "displayIcon": "https://media.valorant-api.com/agents/7f94d92c-4234-0a36-9646-3a87eb8b5c89/displayicon.png",
         "displayIconSmall": "https://media.valorant-api.com/agents/7f94d92c-4234-0a36-9646-3a87eb8b5c89/displayiconsmall.png",
@@ -1402,6 +1493,7 @@
         "displayName": "Sage",
         "description": "The bastion of China, Sage creates safety for herself and her team wherever she goes. Able to revive fallen friends and stave off forceful assaults, she provides a calm center to a hellish battlefield.",
         "developerName": "Thorne",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Recovery",
             "Stalling"
@@ -1465,6 +1557,7 @@
         "displayName": "Reyna",
         "description": "Forged in the heart of Mexico, Reyna dominates single combat, popping off with each kill she scores. Her capability is only limited by her raw skill, making her sharply dependent on performance. ",
         "developerName": "Vampire",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Evasion",
             "Self-Sustain"
@@ -1528,6 +1621,7 @@
         "displayName": "Omen",
         "description": "A phantom of a memory, Omen hunts in the shadows. He renders enemies blind, teleports across the field, then lets paranoia take hold as his foe scrambles to uncover where he might strike next.",
         "developerName": "Wraith",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Mobility",
             "Vision Control"
@@ -1591,6 +1685,7 @@
         "displayName": "Jett",
         "description": "Representing her home country of South Korea, Jett's agile and evasive fighting style lets her take risks no one else can. She runs circles around every skirmish, cutting enemies up before they even know what hit them.",
         "developerName": "Wushu",
+        "releaseDate": "1970-01-01T00:00:00Z",
         "characterTags": [
             "Evasion",
             "Mobility"

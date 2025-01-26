@@ -1,12 +1,19 @@
 import os
 import sys
+import concurrent
 import pandas as pd
 import supabase
 from supabase import create_client
 import json
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
+from threading import Lock
+
+
 
 import SECRET_DATA as SECRETS
 import utils
+
 
 
 
@@ -163,7 +170,7 @@ class RIOT_MATCHES:
             2. Performs an upsert for each row in the table using 'matchId' as the key.
             3. Converts 'infoJson' to a text format suitable for CSV storage.
         '''
-        
+        print("Updating matches", end="")
         table = fetchTable(RIOT_MATCHES.TABLE)
         file_path = RIOT_MATCHES.FILE
         
@@ -175,18 +182,42 @@ class RIOT_MATCHES:
                                             "player1-1", "player1-2", "player1-3", "player1-4", "player1-5", 
                                             "player2-1", "player2-2", "player2-3", "player2-4", "player2-5"
                                         ])
-        
+        print(".", end="")
         if table.data:
             new_data = pd.DataFrame(table.data)
             new_data['infoJson'] = new_data['infoJson'].apply(lambda x: json.dumps(x))
-            
+            print(".", end="")
             if not existing_df.empty:
                 existing_df = existing_df[~existing_df['matchId'].isin(new_data['matchId'])]  
-            
+            print(".", end="")
             updated_df = pd.concat([existing_df, new_data], ignore_index=True)
             updated_df.to_csv(file_path, index=False)
-            for index, row in new_data.iterrows():
-                utils.MATCH_OOP.Match.create(row['matchId'])
+            print(" DONE!")
+            print()
+            RIOT_MATCHES.create_classes()
+    
+    def create_classes():
+        print("Creating classes")
+        
+        def process_row(row) -> object:
+            matchId = row['matchId']
+            match = utils.MATCH_OOP.Match.create(matchId, False)
+            return match
+
+        file_path = RIOT_MATCHES.FILE
+        if not os.path.exists(file_path):
+            if utils.SETTINGS.PRINTABLES:
+                print("CSV file not found. No data to upload.")
+        else:
+            existing_df = pd.read_csv(file_path)
+            total_rows = len(existing_df)  # Get the total number of rows for the progress bar
+            with tqdm(total=total_rows, unit="partido", bar_format="{l_bar}{bar:40}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]") as progress_bar:
+                for index, row in existing_df.iterrows():
+                    utils.All_Classes.ALL_MATCHES.append(process_row(row))
+                    progress_bar.update(1)  # Update the progress bar for each iteration
+            print("Matches Created")
+            print()
+                
     
     def search(matchId: str) -> json:        
         if not utils.FUNCTIONS.isUuidFormat(matchId):
