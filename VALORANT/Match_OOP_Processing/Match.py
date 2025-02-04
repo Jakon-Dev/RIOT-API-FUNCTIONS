@@ -7,6 +7,9 @@ import Match_OOP_Processing.Round as Round_Class
 import Match_OOP_Processing.Assist as Assist_Class
 import Match_OOP_Processing.Kill as Kill_Class
 import Match_OOP_Processing.Location as Location_Class
+import Match_OOP_Processing.Loadout as Loadout_Class
+
+
 
 
 
@@ -49,6 +52,7 @@ class Match:
                 self.ASSISTS = []
                 self.KILLS = []
                 self.LOCATIONS = []
+                self.LOADOUTS = []
             init_lists()
             
             
@@ -71,6 +75,8 @@ class Match:
 
         utils.ALL_DATA.DATA_BASE.RIOT_MATCHES.upsert(matchId, self.API_json, self.PLAYERS_PUUIDS)
         
+    
+    
     def process(self) -> None:
         def process_players():
             for player in self.API_json["players"]:
@@ -181,9 +187,30 @@ class Match:
                                     "roundTime": kill["timeSinceRoundStartMillis"],
                                     "roundNumber": rounde["roundNum"]
                                 }
-                                Location_Class.Location.create(dict)
-                    
+                                Location_Class.Location.create(dict) 
                 process_locations()
+                
+               
+                def process_loadouts():
+                    playerStats = rounde["playerStats"]
+                    for player in playerStats:
+                        economy = player["economy"]
+                        dict = {
+                            "matchId": self.matchId,
+                            "mapUuid": self.mapUuid,
+                            "playerPuuid": player["puuid"],
+                            "roundNumber": rounde["roundNum"],
+                            "value": economy["loadoutValue"],
+                            "remaining": economy["remaining"],
+                            "spent": economy["spent"],
+                            "weaponId": economy["weapon"],
+                            "armorId": economy["armor"]
+                        }
+                        loadout = Loadout_Class.Loadout.create(dict)
+                        self.LOADOUTS.append(loadout)
+                        
+                process_loadouts()
+                
         process_rounds()
         
         def process_teams():
@@ -205,7 +232,7 @@ class Match:
         
 
     
-       
+    
     def create(matchId: str, append: bool = True) -> object:
         assert(utils.FUNCTIONS.isUuidFormat(matchId))
         match = All_Classes.get_match_by_matchId(matchId, append) 

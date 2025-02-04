@@ -20,6 +20,9 @@ import Match_OOP_Processing.Match as Match_Class
 import Match_OOP_Processing.Player as Player_Class
 import Match_OOP_Processing.Location as Location_Class
 import Match_OOP_Processing.All as All_Classes
+import Match_OOP_Processing.Loadout as Loadout_Class
+
+
 
 
 
@@ -271,6 +274,9 @@ class MATCH_OOP:
         pass
     
     class Location(Location_Class.Location):
+        pass
+    
+    class Loadout(Loadout_Class.Loadout):
         pass
     
     

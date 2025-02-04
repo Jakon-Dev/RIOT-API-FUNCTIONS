@@ -3,10 +3,9 @@ import signal
 import sys
 import utils
 import Location_Heatmap.main as Location_Heatmap
+import Loadouts.main as Loadouts
 import Match_OOP_Processing.All as All_Classes
 import matplotlib.pyplot as plt
-from IPython.display import display
-import ipywidgets as widgets
 import os
 
 
@@ -232,10 +231,29 @@ class FUNTIONS:
         except Exception as e:
             print(f"Error executing code: {e}")
 
-    def loadouts(*args):
+    def loadouts():
         matchId = input("    MatchId:")
         round = input("    Round:")
         player = input("    Player:")
+        
+        # Validar MatchId como UUID
+        while not utils.FUNCTIONS.isUuidFormat(matchId):
+            matchId = input("    MatchId:")
+        
+        # Validar que el round sea un número o esté vacío
+        while not (round.isdigit() or round == ""):
+            round = input("    Round:")
+        
+        # Validar que el jugador tenga formato de nombre completo o PUUID, o esté vacío
+        while not (utils.FUNCTIONS.isFullName(player) or utils.FUNCTIONS.isPuuidFormat(player) or player == ""):
+            player = input("    Player:")
+        
+        # Si el jugador se ingresó como nombre completo, convertirlo a PUUID
+        if utils.FUNCTIONS.isFullName(player):
+            player = utils.DATA_FINDERS.RIOT_USERS.get_puuid_by_name(player)
+        
+        Loadouts.run(matchId, round, player)
+
 
         
  
@@ -281,10 +299,8 @@ COMMANDS = {
     },
     "loadouts": {
         "definition": "Gives loadout information",
-        "function": lambda params: FUNTIONS.loadouts(*params.split(" ")),
-        "params": '''
-            matchId
-        '''
+        "function": lambda : FUNTIONS.loadouts(),
+        "params": ""
     }
 }
 

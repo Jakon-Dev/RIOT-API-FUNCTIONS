@@ -8,6 +8,7 @@ ALL_COACHES = []
 ALL_ASSISTS = []
 ALL_KILLS = []
 ALL_LOCATIONS = []
+ALL_LOADOUTS = []
 
 
 
@@ -35,3 +36,11 @@ def get_location_by_dict(info: dict) -> object:
     newLocation = utils.MATCH_OOP.Location(info)
     ALL_LOCATIONS.append(newLocation)
     return newLocation
+
+def get_loadout_by_dict(info: dict) -> object:
+    for loadout in ALL_LOADOUTS:
+        if loadout.__dict__ == info:
+            return loadout
+    newLoadout = utils.MATCH_OOP.Loadout(info)
+    ALL_LOADOUTS.append(newLoadout)
+    return newLoadout
